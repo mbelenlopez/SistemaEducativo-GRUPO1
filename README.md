@@ -1,4 +1,4 @@
 ## Nuestro Proyecto - Sistema Educativo
 Modelo:
 
-![Captura del Sistema Educativo](ProyectoSistemaEducativo/imagenes/captura.png)
+![Captura del Sistema Educativo](imagenes/captura.png)
