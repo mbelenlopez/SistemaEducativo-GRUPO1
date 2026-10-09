@@ -11,4 +11,7 @@
     <FlyoutItem Title="⌂   Inicio / Comisión" Route="MainPage">
         <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </FlyoutItem>
+	<FlyoutItem Title="👥   Nómina (H1)" Route="NominaPage">
+		<ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
+	</FlyoutItem>
 </Shell>

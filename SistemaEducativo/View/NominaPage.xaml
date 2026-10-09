@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SistemaEducativo.View.NominaPage"
+    BackgroundColor="#F7F9FC"
+    Title="Nómina">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+            <Label Text="NÓMINA DE ESTUDIANTES" Style="{StaticResource TituloPagina}" />
+            <Label Text="{Binding Sesion.ComisionActualNombre, StringFormat='H1 · Comisión activa: {0}'}" Style="{StaticResource Subtitulo}" />
+
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Incorporar estudiante" FontAttributes="Bold" FontSize="17" />
+                    <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+                        <Entry Placeholder="Apellido" Text="{Binding Apellido}" />
+                        <Entry Grid.Column="1" Placeholder="Nombre" Text="{Binding Nombre}" />
+                        <Entry Grid.Column="2" Placeholder="Legajo" Text="{Binding Legajo}" />
+                        <DatePicker Grid.Column="3" Date="{Binding FechaIncorporacion}" />
+                    </Grid>
+                    <Button Text="+ Incorporar estudiante" Command="{Binding AgregarCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
+                    <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <CollectionView ItemsSource="{Binding Estudiantes}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Style="{StaticResource ItemTarjeta}">
+                            <Grid ColumnDefinitions="2*,2*,*,*">
+                                <Label Text="{Binding Apellido}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding Nombre}" />
+                                <Label Grid.Column="2" Text="{Binding Legajo}" />
+                                <Label Grid.Column="3" Text="{Binding FechaIncorporacion}" TextColor="#6B7788" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
