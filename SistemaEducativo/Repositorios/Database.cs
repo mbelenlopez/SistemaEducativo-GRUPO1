@@ -14,7 +14,7 @@ public class Database
             return _connection;   // ya estaba abierta: se reutiliza
 
         var path = Path.Combine(FileSystem.AppDataDirectory, "seguimiento.db3");
-        _connection = new SQLiteAsyncConnection(path);
+        _connection = new SQLiteAsyncConnection(path, storeDateTimeAsTicks: false);
 
         // Crea cada tabla SI NO EXISTE (si ya existe, no hace nada).
         await _connection.CreateTableAsync<Comision>();

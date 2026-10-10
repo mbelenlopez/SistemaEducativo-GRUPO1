@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaEducativo.Entidades;
 
@@ -12,5 +13,7 @@ public class Clase
     public int ComisionId { get; set; }
 
     [NotNull]
-    public string Fecha { get; set; } = string.Empty;
+    public DateTime Fecha { get; set; }
+
+    public string FechaFormateada => Fecha.ToString("dd/MM/yyyy");
 }

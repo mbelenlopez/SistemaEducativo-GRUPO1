@@ -60,7 +60,7 @@ public partial class NominaViewModel : ViewModelBase
             Apellido = Apellido,
             Nombre = Nombre,
             Legajo = Legajo,
-            FechaIncorporacion = FechaIncorporacion.ToString("yyyy-MM-dd")
+            FechaIncorporacion = FechaIncorporacion
         });
 
         Mensaje = resultado.Mensaje;

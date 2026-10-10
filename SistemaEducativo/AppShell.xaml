@@ -14,4 +14,10 @@
 	<FlyoutItem Title="👥   Nómina (H1)" Route="NominaPage">
 		<ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
 	</FlyoutItem>
+    <FlyoutItem Title="Calendario(H2)" Route="CalendarioPage">
+        <ShellContent ContentTemplate="{DataTemplate view:CalendarioPage}"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Trabajos(H2)" Route="TrabajoPage">
+        <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
+    </FlyoutItem>
 </Shell>

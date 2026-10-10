@@ -20,7 +20,7 @@ public class Estudiante
     [NotNull]
     public string Nombre { get; set; } = string.Empty;
 
-    public string FechaIncorporacion { get; set; } = string.Empty;
+    public DateTime FechaIncorporacion { get; set; }
 
     // Dato calculado para mostrar en listas. [Ignore]: no es una columna de la tabla.
     [Ignore]

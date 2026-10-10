@@ -14,5 +14,5 @@ public class Trabajo
     [NotNull]
     public string Titulo { get; set; } = string.Empty;
 
-    public string FechaLimite { get; set; } = string.Empty;
+    public DateTime FechaLimite { get; set; }
 }

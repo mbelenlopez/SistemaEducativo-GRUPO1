@@ -33,7 +33,7 @@
                                 <Label Text="{Binding Apellido}" FontAttributes="Bold" />
                                 <Label Grid.Column="1" Text="{Binding Nombre}" />
                                 <Label Grid.Column="2" Text="{Binding Legajo}" />
-                                <Label Grid.Column="3" Text="{Binding FechaIncorporacion}" TextColor="#6B7788" />
+                                <Label Grid.Column="3" Text="{Binding FechaIncorporacion, StringFormat='{0:dd/MM/yyyy}'}" TextColor="#6B7788" />
                             </Grid>
                         </Border>
                     </DataTemplate>

@@ -39,4 +39,21 @@
     <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="View\CalendarioPage.xaml.cs">
+      <DependentUpon>CalendarioPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="View\TrabajoPage.xaml.cs">
+      <DependentUpon>TrabajoPage.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <MauiXaml Update="View\CalendarioPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="View\TrabajoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+  </ItemGroup>
 </Project>

@@ -26,9 +26,6 @@ public class EstudianteService
         if (existente != null)
             return (false, $"El legajo {estudiante.Legajo} ya pertenece a {existente.Apellido}, {existente.Nombre}.");
 
-        if (string.IsNullOrWhiteSpace(estudiante.FechaIncorporacion))
-            estudiante.FechaIncorporacion = DateTime.Today.ToString("yyyy-MM-dd");
-
         await _repositorio.AgregarAsync(estudiante);
         return (true, "Estudiante incorporado correctamente.");
     }
