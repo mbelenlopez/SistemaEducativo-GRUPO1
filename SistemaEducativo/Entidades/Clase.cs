@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaEducativo.Entidades;
 

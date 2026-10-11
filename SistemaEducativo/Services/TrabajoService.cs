@@ -17,7 +17,7 @@ namespace SistemaEducativo.Services
             if (string.IsNullOrWhiteSpace(titulo))
                 return (false, "El trabajo necesita un título.");
            
-            await _repositorio.AgrearAsync(
+            await _repositorio.AgregarAsync(
                     new Trabajo{
                         ComisionId = comisionId,
                         Titulo = titulo,

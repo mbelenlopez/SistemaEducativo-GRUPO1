@@ -4,7 +4,7 @@ namespace SistemaEducativo.Services
 {
     public interface TrabajoRepositorio
     {
-        Task<List<Trabajo>> ObtenerPorComisionAsync(int ComisionId);
-        Task AgrearAsync(Trabajo Trabajo);
+        Task<List<Trabajo>> ObtenerPorComisionAsync(int comisionId);
+        Task AgregarAsync(Trabajo trabajo);
     }
 }
