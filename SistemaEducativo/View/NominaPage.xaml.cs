@@ -1,4 +1,4 @@
-using SistemaEducativo.ViewModel;
+Ôªøusing SistemaEducativo.ViewModel;
 
 namespace SistemaEducativo.View;
 
@@ -13,7 +13,7 @@ public partial class NominaPage : ContentPage
         BindingContext = viewModel;
     }
 
-    // Cada vez que la p·gina se muestra, se recargan los datos de la comisiÛn activa.
+    // Cada vez que la p√°gina se muestra, se recargan los datos de la comisi√≥n activa.
     protected override async void OnAppearing()
     {
         base.OnAppearing();
