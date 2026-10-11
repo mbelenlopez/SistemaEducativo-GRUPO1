@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+ï»¿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SistemaEducativo.Entidades;
@@ -6,7 +6,7 @@ using SistemaEducativo.Services;
 
 namespace SistemaEducativo.ViewModel;
 
-// H1: cargar y ver la nómina de la comisión activa.
+// H1: cargar y ver la nÃ³mina de la comisiÃ³n activa.
 public partial class NominaViewModel : ViewModelBase
 {
     private readonly EstudianteService _service;
@@ -33,37 +33,24 @@ public partial class NominaViewModel : ViewModelBase
     [RelayCommand]
     public async Task CargarAsync()
     {
-        Estudiantes.Clear();
-
-        if (!Sesion.HayComision)
+        if (FaltaElegirComision())
         {
-            Mensaje = SinComision;
+            Estudiantes.Clear();
             return;
         }
 
-        foreach (var estudiante in await _service.ObtenerPorComisionAsync(ComisionId))
-            Estudiantes.Add(estudiante);
+        Reemplazar(Estudiantes, await _service.ObtenerPorComisionAsync(ComisionId));
     }
 
     [RelayCommand]
     public async Task AgregarAsync()
     {
-        if (!Sesion.HayComision)
-        {
-            Mensaje = SinComision;
+        if (FaltaElegirComision())
             return;
-        }
 
-        var resultado = await _service.AgregarAsync(new Estudiante
-        {
-            ComisionId = ComisionId,
-            Apellido = Apellido,
-            Nombre = Nombre,
-            Legajo = Legajo,
-            FechaIncorporacion = FechaIncorporacion
-        });
-
+        var resultado = await _service.IncorporarAsync(ComisionId, Apellido, Nombre, Legajo, FechaIncorporacion);
         Mensaje = resultado.Mensaje;
+
         if (!resultado.Exito)
             return;
 

@@ -14,5 +14,7 @@ public class Clase
     [NotNull]
     public DateTime Fecha { get; set; }
 
+    // Para mostrar en pantalla. [Ignore]: no es una columna de la tabla.
+    [Ignore]
     public string FechaFormateada => Fecha.ToString("dd/MM/yyyy");
 }

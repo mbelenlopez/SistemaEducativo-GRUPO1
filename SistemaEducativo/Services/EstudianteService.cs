@@ -10,6 +10,18 @@ public class EstudianteService
     public Task<List<Estudiante>> ObtenerPorComisionAsync(int comisionId) =>
         _repositorio.ObtenerPorComisionAsync(comisionId);
 
+    // Lo que usa la pantalla: recibe los datos sueltos y arma el estudiante.
+    public Task<(bool Exito, string Mensaje)> IncorporarAsync(
+        int comisionId, string apellido, string nombre, string legajo, DateTime fechaIncorporacion) =>
+        AgregarAsync(new Estudiante
+        {
+            ComisionId = comisionId,
+            Apellido = apellido,
+            Nombre = nombre,
+            Legajo = legajo,
+            FechaIncorporacion = fechaIncorporacion
+        });
+
     public async Task<(bool Exito, string Mensaje)> AgregarAsync(Estudiante estudiante)
     {
         if (string.IsNullOrWhiteSpace(estudiante.Legajo) ||
@@ -25,6 +37,11 @@ public class EstudianteService
         var existente = await _repositorio.ObtenerPorLegajoAsync(estudiante.Legajo);
         if (existente != null)
             return (false, $"El legajo {estudiante.Legajo} ya pertenece a {existente.Apellido}, {existente.Nombre}.");
+
+        // Sin fecha de incorporación se toma hoy.
+        estudiante.FechaIncorporacion = Fechas.EsValida(estudiante.FechaIncorporacion)
+            ? Fechas.SoloFecha(estudiante.FechaIncorporacion)
+            : DateTime.Today;
 
         await _repositorio.AgregarAsync(estudiante);
         return (true, "Estudiante incorporado correctamente.");
