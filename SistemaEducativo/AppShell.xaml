@@ -20,4 +20,7 @@
     <FlyoutItem Title="Trabajos(H2)" Route="TrabajoPage">
         <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
     </FlyoutItem>
+    <FlyoutItem Title="Asistencia(H3)" Route="AsistenciaPage">
+        <ShellContent ContentTemplate="{DataTemplate view:AsistenciaPage}"/>
+    </FlyoutItem>
 </Shell>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel" 
+    xmlns:entidades="clr-namespace:SistemaEducativo.Entidades" 
+    x:Class="SistemaEducativo.View.AsistenciaPage"
+    x:DataType="viewmodel:AsistenciaViewModel"
+    BackgroundColor="#F7F9FC"
+    Title="Asistencia">
+
+    <ScrollView>
+        <VerticalStackLayout 
+            Padding="30" 
+            Spacing="15">
+            <Label 
+                Text="ASISTENCIA" 
+                Style="{StaticResource TituloPagina}" />
+
+            <Picker 
+                Title="Seleccioná una clase"
+                ItemsSource="{Binding Clases}"
+                ItemDisplayBinding="{Binding Fecha, StringFormat='{0:dd/MM/yyyy}'}"
+                SelectedItem="{Binding ClaseSeleccionada}" />
+
+            <Label 
+                Text="{Binding Mensaje}" 
+                Style="{StaticResource MensajeEstado}" />
+    
+            <CollectionView 
+                ItemsSource="{Binding Items}" 
+                SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate 
+                        x:DataType="viewmodel:AsistenciaItem">
+                        <Border 
+                            Style="{StaticResource ItemTarjeta}" 
+                            Padding="12" 
+                            Margin="0,0,0,6">
+                            <Grid 
+                                ColumnDefinitions="*,Auto">
+                                <Label 
+                                    Text="{Binding NombreCompleto}" 
+                                    VerticalOptions="Center" />
+                                <CheckBox 
+                                    Grid.Column="1"
+                                    IsChecked="{Binding Presente}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button 
+                Text="Guardar asistencia"
+                Command="{Binding GuardarCommand}"
+                Style="{StaticResource PrimaryButton}" 
+                HorizontalOptions="Start" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
+

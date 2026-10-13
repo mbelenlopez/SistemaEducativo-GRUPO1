@@ -49,6 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MauiXaml Update="View\AsistenciaPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="View\CalendarioPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
