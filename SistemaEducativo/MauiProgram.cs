@@ -28,9 +28,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<EstudianteService>();
         builder.Services.AddSingleton<CalendarioService>();
         builder.Services.AddSingleton<TrabajoService>();
-        builder.Services.AddSingleton<AsistenciaService>();
-        builder.Services.AddSingleton<CalculadoraRiesgo>();
-        builder.Services.AddSingleton<RiesgoService>();
+        builder.Services.AddSingleton<AsistenciaService>();    
 
         // ---- ViewModel: el estado y las acciones de cada página ----
         builder.Services.AddSingleton<SesionActual>();
