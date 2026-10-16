@@ -55,6 +55,9 @@
     <MauiXaml Update="View\CalendarioPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
+    <MauiXaml Update="View\RiesgoPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="View\TrabajoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>

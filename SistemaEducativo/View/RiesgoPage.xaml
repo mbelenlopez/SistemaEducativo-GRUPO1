@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel"
+    x:Class="SistemaEducativo.View.RiesgoPage"
+    x:DataType="viewmodel:RiesgoViewModel"
+    BackgroundColor="#F7F9FC"
+    Title="Panel de riesgo">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+            <Label Text="PANEL DE RIESGO" Style="{StaticResource TituloPagina}" />
+            <Label Text="{Binding UmbralesTexto}" Style="{StaticResource Subtitulo}" />
+
+            <Button Text="↻ Recalcular riesgo" Command="{Binding RecalcularCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
+            <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
+
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:PanelItem">
+                        <Border Style="{StaticResource ItemTarjeta}" Padding="15">
+                            <Grid ColumnDefinitions="2*,*,*,Auto" ColumnSpacing="12">
+                                <Label Text="{Binding NombreCompleto}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding InasistenciasTexto}" />
+                                <Label Grid.Column="2" Text="{Binding EntregaTexto}" />
+                                <Label Grid.Column="3" Text="{Binding NivelTexto}" FontAttributes="Bold" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

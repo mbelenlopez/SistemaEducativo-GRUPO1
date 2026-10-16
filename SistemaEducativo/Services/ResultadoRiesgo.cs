@@ -10,6 +10,7 @@ namespace SistemaEducativo.Services
     //El calculo del riesgo de un estudiante
     public record ResultadoRiesgo(
         double PorcentajeInasistencias,
+        double PorcentajeNoEntregados,
         string Nivel
     );
 

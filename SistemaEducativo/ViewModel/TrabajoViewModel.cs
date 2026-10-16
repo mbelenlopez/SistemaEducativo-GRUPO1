@@ -25,13 +25,13 @@ public partial class TrabajoViewModel : ViewModelBase
     public ObservableCollection<EntregaItem> Items { get; } = new();
 
     [ObservableProperty]
-    public string titulo = string.Empty;
+    private string titulo = string.Empty;
 
     [ObservableProperty]
-    public DateTime fechaLimite = DateTime.Today.AddDays(7);
+    private DateTime fechaLimite = DateTime.Today.AddDays(7);
 
     [ObservableProperty]
-    public  Trabajo? trabajoSeleccionado;
+    private  Trabajo? trabajoSeleccionado;
 
     partial void OnTrabajoSeleccionadoChanged(Trabajo? value) => _ = CargarItemsAsync();
 

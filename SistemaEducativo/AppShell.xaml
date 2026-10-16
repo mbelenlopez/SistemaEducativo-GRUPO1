@@ -17,10 +17,13 @@
     <FlyoutItem Title="Calendario(H2)" Route="CalendarioPage">
         <ShellContent ContentTemplate="{DataTemplate view:CalendarioPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Trabajos(H2)" Route="TrabajoPage">
-        <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
-    </FlyoutItem>
     <FlyoutItem Title="Asistencia(H3)" Route="AsistenciaPage">
         <ShellContent ContentTemplate="{DataTemplate view:AsistenciaPage}"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Trabajos(H2/H5)" Route="TrabajoPage">
+        <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Riesgo(H6)" Route="RiesgoPage">
+        <ShellContent ContentTemplate="{DataTemplate view:RiesgoPage}"/>
     </FlyoutItem>
 </Shell>

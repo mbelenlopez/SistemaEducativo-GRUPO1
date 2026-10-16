@@ -42,6 +42,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CalendarioViewModel>();
         builder.Services.AddSingleton<TrabajoViewModel>();
         builder.Services.AddSingleton<AsistenciaViewModel>();
+        builder.Services.AddSingleton<RiesgoViewModel>();
 
         // ---- View: las páginas (el AppShell las abre desde el menú lateral) ----
         builder.Services.AddTransient<MainPage>();
@@ -49,6 +50,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CalendarioPage>();
         builder.Services.AddTransient<TrabajoPage>();
         builder.Services.AddTransient<AsistenciaPage>();
+        builder.Services.AddTransient<RiesgoPage>();
 
         return builder.Build();
     }

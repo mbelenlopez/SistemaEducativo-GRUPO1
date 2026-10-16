@@ -36,6 +36,12 @@
                 Text="{Binding Mensaje}"
                 Style="{StaticResource MensajeEstado}"/>
 
+            <Picker Title="Seleccioná un trabajo"
+                    ItemsSource="{Binding Trabajos}"
+                    ItemDisplayBinding="{Binding Titulo}"
+                    SelectedItem="{Binding TrabajoSeleccionado}"
+                    HorizontalOptions="FillAndExpand" />
+
             <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:EntregaItem">
