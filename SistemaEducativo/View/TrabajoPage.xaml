@@ -35,7 +35,22 @@
             <Label
                 Text="{Binding Mensaje}"
                 Style="{StaticResource MensajeEstado}"/>
-            
+
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="None">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:EntregaItem">
+                        <Border Style="{StaticResource ItemTarjeta}" Padding="12" Margin="0,0,0,6">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <Label Text="{Binding NombreCompleto}" VerticalOptions="Center" />
+                                <CheckBox Grid.Column="1" IsChecked="{Binding Entregado}" />
+                                <Label Grid.Column="2" Text="{Binding Estado}" TextColor="#6B7788" VerticalOptions="Center" Margin="10,0,0,0" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Button Text="Guardar entregas" Command="{Binding GuardarCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

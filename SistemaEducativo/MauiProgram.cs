@@ -22,6 +22,8 @@ public static class MauiProgram
         builder.Services.AddSingleton<ClaseRepositorio, ClaseRepositorioSQL>();
         builder.Services.AddSingleton<TrabajoRepositorio, TrabajoRepositorioSQL>(); 
         builder.Services.AddSingleton<AsistenciaRepositorio, AsistenciaRepositorioSQL>();
+        builder.Services.AddSingleton<EntregaRepositorio, EntregaRepositorioSQL>();
+
 
         // ---- Services: la lógica de negocio ----
         builder.Services.AddSingleton<ComisionService>();
@@ -31,6 +33,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<AsistenciaService>();
         builder.Services.AddSingleton<CalculadoraRiesgo>();
         builder.Services.AddSingleton<RiesgoService>();
+        builder.Services.AddSingleton<EntregaService>();
 
         // ---- ViewModel: el estado y las acciones de cada página ----
         builder.Services.AddSingleton<SesionActual>();
