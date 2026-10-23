@@ -1,4 +1,6 @@
-﻿namespace SistemaEducativo.Services
+﻿using SistemaEducativo.Repositorios;
+
+namespace SistemaEducativo.Services
 {
     public class RiesgoService
     {

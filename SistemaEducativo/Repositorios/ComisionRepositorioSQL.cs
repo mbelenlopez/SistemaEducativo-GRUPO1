@@ -1,5 +1,4 @@
 ﻿using SistemaEducativo.Entidades;
-using SistemaEducativo.Services;
 
 namespace SistemaEducativo.Repositorios;
 

@@ -77,6 +77,12 @@ public class Database
         return await db.InsertAsync(item);
     }
 
+    public async Task<int> UpdateAsync<T>(T item) where T : new()
+    {
+        var db = await GetConnectionAsync();
+        return await db.UpdateAsync(item);
+    }
+
     // Ejecuta un SELECT y devuelve las filas como objetos. Los "?" se reemplazan por los valores de args.
     public async Task<List<T>> QueryAsync<T>(string query, params object[] args) where T : new()
     {
@@ -88,7 +94,7 @@ public class Database
     // (en lugar de una consulta por cada id). Los ids viajan como parámetros "?".
     // "tabla" y "columna" son nombres fijos escritos en el código de los repositorios, nunca texto del usuario.
     // Lo usa el panel de riesgo (H6/H8); se incluye ahora para que esa rama no tenga que tocar este archivo.
-    public async Task<List<T>> QueryPorIdsAsync<T>(string tabla, string columna, IReadOnlyCollection<int> ids) where T : new()
+    public async Task<List<T>>  QueryPorIdsAsync<T>(string tabla, string columna, IReadOnlyCollection<int> ids) where T : new()
     {
         var resultado = new List<T>();
 

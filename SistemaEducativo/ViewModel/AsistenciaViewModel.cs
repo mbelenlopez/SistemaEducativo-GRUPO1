@@ -2,12 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 using SistemaEducativo.Entidades;
 using SistemaEducativo.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SistemaEducativo.ViewModel
 {
@@ -96,12 +91,24 @@ namespace SistemaEducativo.ViewModel
             var claseId = ClaseSeleccionada.Id;
             
             var presentes = Items.Where(x => x.Presente).Select(x => x.Estudiante.Id).ToList();
-            var resultado = await _asistenciaService.RegistrarAsistenciaAsync(claseId, ComisionId, presentes);
+            var registrosActuales = await _asistenciaService.ObtenerAsistenciasPorClaseAsync(claseId);
+
+            (bool Exito, string Mensaje) resultado;
+
+            if(registrosActuales.Count > 0)
+            {
+                resultado = await _asistenciaService.CorregirAsistenciaAsync(claseId, ComisionId, presentes);
+            }
+            else
+            {
+                resultado = await _asistenciaService.RegistrarAsistenciaAsync(claseId, ComisionId, presentes);
+            }
 
             if (resultado.Exito)
                 await CargarItemsAsync();
                 
             Mensaje = resultado.Mensaje;
          }
+
     }
 }

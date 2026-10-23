@@ -1,5 +1,4 @@
 ﻿using SistemaEducativo.Entidades;
-using SistemaEducativo.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +18,11 @@ namespace SistemaEducativo.Repositorios
 
         public Task<List<Asistencia>> ObtenerPorEstudianteAsync(int estudianteId)
             => _db.QueryAsync<Asistencia>("SELECT * FROM Asistencias WHERE EstudianteId = ?", estudianteId);
-
+        
         public Task AgregarAsync(Asistencia asistencia)
             => _db.InsertAsync(asistencia);
+        
+        public Task CorregirAsistenciaAsync(Asistencia asistencia)
+            => _db.UpdateAsync(asistencia);
     }
 }

@@ -11,7 +11,7 @@
     <FlyoutItem Title="&#x2302;   Inicio / Comisión" Route="MainPage">
         <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </FlyoutItem>
-	<FlyoutItem Title="&#x1F465;   Nómina (H1)" Route="NominaPage">
+	<FlyoutItem Title="&#x1F465; Nómina (H1)" Route="NominaPage">
 		<ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
 	</FlyoutItem>
     <FlyoutItem Title="Calendario(H2)" Route="CalendarioPage">
@@ -20,7 +20,7 @@
     <FlyoutItem Title="Asistencia(H3)" Route="AsistenciaPage">
         <ShellContent ContentTemplate="{DataTemplate view:AsistenciaPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Trabajos(H2/H5)" Route="TrabajoPage">
+    <FlyoutItem Title="Trabajos(H2)" Route="TrabajoPage">
         <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Riesgo(H6)" Route="RiesgoPage">

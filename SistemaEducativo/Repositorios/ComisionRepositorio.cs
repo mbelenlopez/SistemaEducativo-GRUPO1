@@ -1,6 +1,6 @@
 ﻿using SistemaEducativo.Entidades;
 
-namespace SistemaEducativo.Services;
+namespace SistemaEducativo.Repositorios;
 
 // Puerto (interfaz): define QUÉ datos necesita el sistema sobre comisiones,
 // sin decir CÓMO se guardan. La implementación real está en Repositorios/ComisionRepositorioSQL.cs.

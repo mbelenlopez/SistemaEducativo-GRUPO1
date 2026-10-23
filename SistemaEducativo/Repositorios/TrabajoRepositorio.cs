@@ -1,6 +1,6 @@
 ﻿using SistemaEducativo.Entidades;
 
-namespace SistemaEducativo.Services
+namespace SistemaEducativo.Repositorios
 {
     public interface TrabajoRepositorio
     {
