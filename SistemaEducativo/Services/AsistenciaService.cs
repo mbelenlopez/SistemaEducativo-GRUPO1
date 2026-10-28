@@ -54,21 +54,38 @@ namespace SistemaEducativo.Services
             return (true, "Asistencia registrada correctamente.");
         }
 
-        public async Task<(bool, string Mensaje)> CorregirAsistenciaAsync(int claseId, int comisionId, IEnumerable<int> presentes)
+        public async Task<(bool, string Mensaje)> CorregirAsistenciaAsync(int claseId, int comisionId, Dictionary<int, bool> estados)
         {
-            var idsPresentes = presentes.ToHashSet();
+            var asistenciasExistentes = await ObtenerAsistenciasPorClaseAsync(claseId);
 
-            var asistenciasExistentes = await _asistenciaRepositorio.ObtenerPorClaseAsync(claseId);
+            var estudiantesComision = await _estudianteRepositorio.ObtenerPorComisionAsync(comisionId);
 
-            foreach(var asistencia in asistenciasExistentes)
+            foreach (var estudiante in estudiantesComision)
             {
-                bool estaPresente = idsPresentes.Contains(asistencia.EstudianteId);
-                asistencia.Condicion = estaPresente ? "Presente" : "Ausente";
+                var asistenciaReg = asistenciasExistentes.FirstOrDefault(a => a.EstudianteId == estudiante.Id);
 
-                await _asistenciaRepositorio.CorregirAsistenciaAsync(asistencia);
+                bool presente = estados.TryGetValue(estudiante.Id, out var p) && p;
+                string nuevaCondicion = presente ? "Presente" : "Ausente";
+
+                if (asistenciaReg != null)
+                {
+                    asistenciaReg.Condicion = nuevaCondicion;
+                    await _asistenciaRepositorio.CorregirAsistenciaAsync(asistenciaReg);
+                }
+                else
+                {
+                    var nuevaAsistencia = new Asistencia
+                    {
+                        ClaseId = claseId,
+                        EstudianteId = estudiante.Id,
+                        Condicion = nuevaCondicion
+                    };
+                    await _asistenciaRepositorio.AgregarAsync(nuevaAsistencia);
+                }
+
             }
 
-            return (true, "Asistencia corregida correctamente.");
+            return (true, "Asistencia corregida y completada correctamente.");
         }
     }
 }

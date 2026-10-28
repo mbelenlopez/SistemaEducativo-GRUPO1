@@ -22,7 +22,7 @@
                 ItemsSource="{Binding Clases}"
                 ItemDisplayBinding="{Binding Fecha, StringFormat='{0:dd/MM/yyyy}'}"
                 SelectedItem="{Binding ClaseSeleccionada}" />
-
+            
             <Label 
                 Text="{Binding Mensaje}" 
                 Style="{StaticResource MensajeEstado}" />

@@ -21,8 +21,12 @@ namespace SistemaEducativo.Repositorios
         
         public Task AgregarAsync(Asistencia asistencia)
             => _db.InsertAsync(asistencia);
-        
+
         public Task CorregirAsistenciaAsync(Asistencia asistencia)
-            => _db.UpdateAsync(asistencia);
+        {
+            // --- CHIVATO 2: Confirmemos que entra acá y con qué ID ---
+            System.Diagnostics.Debug.WriteLine($"[REPO] Ejecutando UpdateAsync para Asistencia ID: {asistencia.Id} con valor: {asistencia.Condicion}");
+            return _db.UpdateAsync(asistencia);
+        }
     }
 }

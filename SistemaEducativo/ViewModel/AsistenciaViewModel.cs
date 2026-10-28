@@ -93,16 +93,9 @@ namespace SistemaEducativo.ViewModel
             var presentes = Items.Where(x => x.Presente).Select(x => x.Estudiante.Id).ToList();
             var registrosActuales = await _asistenciaService.ObtenerAsistenciasPorClaseAsync(claseId);
 
-            (bool Exito, string Mensaje) resultado;
-
-            if(registrosActuales.Count > 0)
-            {
-                resultado = await _asistenciaService.CorregirAsistenciaAsync(claseId, ComisionId, presentes);
-            }
-            else
-            {
-                resultado = await _asistenciaService.RegistrarAsistenciaAsync(claseId, ComisionId, presentes);
-            }
+            (bool Exito, string Mensaje) resultado = registrosActuales.Count == 0
+                ? resultado = await _asistenciaService.RegistrarAsistenciaAsync(claseId, ComisionId, presentes)
+                : resultado = await _asistenciaService.CorregirAsistenciaAsync(claseId, ComisionId, Items.ToDictionary(x => x.Estudiante.Id, x => x.Presente));
 
             if (resultado.Exito)
                 await CargarItemsAsync();
@@ -110,5 +103,17 @@ namespace SistemaEducativo.ViewModel
             Mensaje = resultado.Mensaje;
          }
 
+        [RelayCommand]
+        public async Task CorregirAsync()
+        {
+            if (ClaseSeleccionada is null)
+            {
+                Mensaje = "Seleccioná una clase.";
+                return;
+            }
+
+            await CargarItemsAsync();
+            Mensaje = "Modo corrección: Modificá los presentes y presiona Guardar asistencia.";
+        }
     }
 }
