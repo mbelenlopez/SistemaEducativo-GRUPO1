@@ -44,6 +44,7 @@ public class Database
             await conexion.CreateTableAsync<Asistencia>();
             await conexion.CreateTableAsync<Trabajo>();
             await conexion.CreateTableAsync<Entrega>();
+            await conexion.CreateTableAsync<Contacto>();
 
             await SeedAsync(conexion);
 

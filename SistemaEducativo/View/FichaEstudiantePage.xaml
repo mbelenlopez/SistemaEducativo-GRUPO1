@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel"
+    x:Class="SistemaEducativo.View.FichaEstudiantePage"
+    x:DataType="viewmodel:FichaEstudianteViewModel"
+    BackgroundColor="#F7F9FC"
+    Title="Ficha del estudiante">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+
+            <Button Text="&#x2190; Volver al panel" Clicked="OnVolver" Style="{StaticResource SecondaryButton}" HorizontalOptions="Start" />
+
+            <Label Text="FICHA DEL ESTUDIANTE" Style="{StaticResource TituloPagina}" />
+            <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
+
+            <!-- Todas las tarjetas se ocultan si el estudiante no existe -->
+            <VerticalStackLayout Spacing="15" IsVisible="{Binding HayFicha}">
+
+                <!-- Datos del estudiante -->
+                <Border Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="{Binding NombreCompleto}" FontSize="22" FontAttributes="Bold" TextColor="#172033" />
+                        <Label Text="{Binding Legajo, StringFormat='Legajo: {0}'}" />
+                        <Label Text="{Binding Sesion.ComisionActualNombre, StringFormat='Comision: {0}'}" />
+                        <Label Text="{Binding IncorporacionTexto}" Style="{StaticResource Subtitulo}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Riesgo actual y los datos que lo justifican (CA3) -->
+                <Border Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="6">
+                        <Label Text="RIESGO ACTUAL" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="{Binding NivelTexto}" FontSize="20" FontAttributes="Bold" />
+                        <Label Text="{Binding MotivoRiesgoTexto}" />
+                        <Label Text="{Binding InasistenciasTexto}" />
+                        <Label Text="{Binding NoEntregasTexto}" />
+                        <Label Text="{Binding UmbralesTexto}" Style="{StaticResource Subtitulo}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Historial de asistencia (CA1) -->
+                <Border Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="HISTORIAL DE ASISTENCIA" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="Todavia no hay asistencia registrada." Style="{StaticResource Subtitulo}" IsVisible="{Binding SinAsistencias}" />
+                        <VerticalStackLayout Spacing="6" BindableLayout.ItemsSource="{Binding Asistencias}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodel:AsistenciaFila">
+                                    <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                                        <Label Text="{Binding FechaTexto}" />
+                                        <Label Grid.Column="1" Text="{Binding EstadoTexto}" FontAttributes="Bold" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Historial de entregas (CA2) -->
+                <Border Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="HISTORIAL DE ENTREGAS" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="Todavia no hay entregas registradas." Style="{StaticResource Subtitulo}" IsVisible="{Binding SinEntregas}" />
+                        <VerticalStackLayout Spacing="6" BindableLayout.ItemsSource="{Binding Entregas}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodel:EntregaFila">
+                                    <Grid ColumnDefinitions="*,*,Auto" ColumnSpacing="12">
+                                        <Label Text="{Binding Trabajo}" FontAttributes="Bold" />
+                                        <Label Grid.Column="1" Text="{Binding FechaLimiteTexto}" Style="{StaticResource Subtitulo}" />
+                                        <Label Grid.Column="2" Text="{Binding EstadoTexto}" FontAttributes="Bold" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!-- Historial de contactos (CA4 y CA5) -->
+                <Border Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="HISTORIAL DE CONTACTOS" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="No hay contactos registrados." Style="{StaticResource Subtitulo}" IsVisible="{Binding SinContactos}" />
+                        <VerticalStackLayout Spacing="6" BindableLayout.ItemsSource="{Binding Contactos}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="viewmodel:ContactoFila">
+                                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                                        <Label Text="{Binding FechaTexto}" FontAttributes="Bold" />
+                                        <Label Grid.Column="1" Text="{Binding Resultado}" />
+                                    </Grid>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

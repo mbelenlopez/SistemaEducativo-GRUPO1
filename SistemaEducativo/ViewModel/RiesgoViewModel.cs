@@ -46,6 +46,7 @@ namespace SistemaEducativo.ViewModel
 
                 filas.Add(new PanelItem
                 {
+                    EstudianteId = estudiante.Id,
                     NombreCompleto = estudiante.NombreCompleto,
                     InasistenciasTexto = $"Inasistencias: {riesgo.PorcentajeInasistencias:0}%",
                     EntregaTexto = $"No entregas: {riesgo.PorcentajeNoEntregados:0}%",

@@ -20,5 +20,13 @@ public class EstudianteRepositorioSQL : EstudianteRepositorio
         return lista.FirstOrDefault();
     }
 
+    public async Task<Estudiante?> ObtenerPorIdAsync(int id)
+    {
+        var lista = await _db.QueryAsync<Estudiante>(
+            "SELECT * FROM Estudiantes WHERE Id = ?",
+            id);
+        return lista.FirstOrDefault();
+    }
+
     public Task AgregarAsync(Estudiante estudiante) => _db.InsertAsync(estudiante);
 }

@@ -23,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<TrabajoRepositorio, TrabajoRepositorioSQL>(); 
         builder.Services.AddSingleton<AsistenciaRepositorio, AsistenciaRepositorioSQL>();
         builder.Services.AddSingleton<EntregaRepositorio, EntregaRepositorioSQL>();
+        builder.Services.AddSingleton<ContactoRepositorio, ContactoRepositorioSQL>();
 
 
         // ---- Services: la lógica de negocio ----
@@ -34,6 +35,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<CalculadoraRiesgo>();
         builder.Services.AddSingleton<RiesgoService>();
         builder.Services.AddSingleton<EntregaService>();
+        builder.Services.AddSingleton<FichaEstudianteService>();
 
         // ---- ViewModel: el estado y las acciones de cada página ----
         builder.Services.AddSingleton<SesionActual>();
@@ -43,6 +45,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<TrabajoViewModel>();
         builder.Services.AddSingleton<AsistenciaViewModel>();
         builder.Services.AddSingleton<RiesgoViewModel>();
+        builder.Services.AddTransient<FichaEstudianteViewModel>();   // uno nuevo por ficha: no arrastra datos de otro estudiante
 
         // ---- View: las páginas (el AppShell las abre desde el menú lateral) ----
         builder.Services.AddTransient<MainPage>();
@@ -51,6 +54,7 @@ public static class MauiProgram
         builder.Services.AddTransient<TrabajoPage>();
         builder.Services.AddTransient<AsistenciaPage>();
         builder.Services.AddTransient<RiesgoPage>();
+        builder.Services.AddTransient<FichaEstudiantePage>();
 
         return builder.Build();
     }
