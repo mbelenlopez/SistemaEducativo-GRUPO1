@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel"
+    x:Class="SistemaEducativo.View.ConfiguracionRiesgoPage"
+    x:DataType="viewmodel:ConfiguracionRiesgoViewModel"
+    BackgroundColor="#F7F9FC"
+    Title="Umbrales de riesgo">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+
+            <Label Text="CONFIGURACI&#xD3;N DE UMBRALES" Style="{StaticResource TituloPagina}" />
+            <Label Text="El riesgo de un estudiante es ALTO si alguno de los dos indicadores llega al umbral que definas ac&#xE1;. Los cambios valen para todas las comisiones." Style="{StaticResource Subtitulo}" />
+            <Label Text="{Binding DefectoTexto}" Style="{StaticResource Subtitulo}" />
+
+            <Border Style="{StaticResource Tarjeta}">
+                <VerticalStackLayout Spacing="12">
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Umbral de inasistencias (%)" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="Riesgo si el porcentaje de ausencias llega a este valor." Style="{StaticResource Subtitulo}" />
+                        <Entry Text="{Binding UmbralInasistenciasTexto}" Placeholder="0 a 100" Keyboard="Numeric" MaximumWidthRequest="200" HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Umbral de trabajos no entregados (%)" FontAttributes="Bold" TextColor="#26364A" />
+                        <Label Text="Riesgo si el porcentaje de trabajos no entregados llega a este valor." Style="{StaticResource Subtitulo}" />
+                        <Entry Text="{Binding UmbralNoEntregadosTexto}" Placeholder="0 a 100" Keyboard="Numeric" MaximumWidthRequest="200" HorizontalOptions="Start" />
+                    </VerticalStackLayout>
+
+                    <Button Text="Guardar y recalcular" Command="{Binding GuardarCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
+            <Label Text="{Binding ResumenTexto}" Style="{StaticResource Subtitulo}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

@@ -8,10 +8,10 @@
     FlyoutBehavior="Locked">
 
     <!-- Cada FlyoutItem es un botón del menú lateral. Su ShellContent es la página que se abre. -->
-    <FlyoutItem Title="&#x2302;   Inicio / Comisión" Route="MainPage">
+    <FlyoutItem Title="Inicio / Comisión" Route="MainPage">
         <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </FlyoutItem>
-	<FlyoutItem Title="&#x1F465; Nómina (H1)" Route="NominaPage">
+	<FlyoutItem Title="Nómina (H1)" Route="NominaPage">
 		<ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
 	</FlyoutItem>
     <FlyoutItem Title="Calendario(H2)" Route="CalendarioPage">
