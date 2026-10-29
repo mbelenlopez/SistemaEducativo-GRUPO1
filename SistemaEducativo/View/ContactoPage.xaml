@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel"
+    xmlns:entidades="clr-namespace:SistemaEducativo.Entidades"
+    x:Class="SistemaEducativo.View.ContactoPage"
+    x:DataType="viewmodel:ContactoViewModel"
+    BackgroundColor="#F7F9FC"
+    Title="Contactos">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+            <Label Text="CONTACTOS" Style="{StaticResource TituloPagina}" />
+
+            <Picker
+                Title="Elegí un estudiante"
+                ItemsSource="{Binding Estudiantes}"
+                ItemDisplayBinding="{Binding NombreCompleto}"
+                SelectedItem="{Binding EstudianteSeleccionado}" />
+
+            <DatePicker Date="{Binding Fecha}" Format="dd/MM/yyyy" />
+
+            <Picker
+                Title="¿Cómo fue el contacto?"
+                ItemsSource="{Binding Tipos}"
+                SelectedItem="{Binding TipoSeleccionado}" />
+
+            <Entry
+                Placeholder="Resultado"
+                Text="{Binding Resultado}" />
+
+            <Button
+                Text="Guardar contacto"
+                Command="{Binding GuardarCommand}"
+                Style="{StaticResource PrimaryButton}"
+                HorizontalOptions="Start" />
+
+            <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
+
+            <Label Text="{Binding HistorialTitulo}" FontAttributes="Bold" TextColor="#26364A" />
+
+            <VerticalStackLayout Spacing="6" BindableLayout.ItemsSource="{Binding Historial}">
+                <BindableLayout.ItemTemplate>
+                    <DataTemplate x:DataType="viewmodel:ContactoItem">
+                        <Border Style="{StaticResource ItemTarjeta}" Padding="12">
+                            <Grid ColumnDefinitions="Auto,Auto,*" ColumnSpacing="12">
+                                <Label Text="{Binding FechaTexto}" FontAttributes="Bold" />
+                                <Label Grid.Column="1" Text="{Binding TipoTexto}" />
+                                <Label Grid.Column="2" Text="{Binding Resultado}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </BindableLayout.ItemTemplate>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

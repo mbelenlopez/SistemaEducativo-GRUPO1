@@ -16,6 +16,8 @@ public class Contacto
     [NotNull]
     public DateTime Fecha { get; set; }
 
+    public string Tipo { get; set; } = string.Empty;
+
     [NotNull]
     public string Resultado { get; set; } = string.Empty;
 }
