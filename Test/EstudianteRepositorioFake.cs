@@ -18,6 +18,9 @@ public class EstudianteRepositorioFake : EstudianteRepositorio
     public Task<Estudiante?> ObtenerPorLegajoAsync(string legajo) =>
         Task.FromResult(Datos.FirstOrDefault(e => e.Legajo == legajo));
 
+    public Task<Estudiante?> ObtenerPorIdAsync(int id) =>
+        Task.FromResult(Datos.FirstOrDefault(e => e.Id == id));
+
     public Task AgregarAsync(Estudiante estudiante)
     {
         estudiante.Id = _siguienteId++;   // igual que AutoIncrement en SQLite

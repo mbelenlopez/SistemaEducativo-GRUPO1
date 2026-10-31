@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using SistemaEducativo.Entidades;
 
 namespace SistemaEducativo.Repositorios;
 
@@ -38,13 +37,13 @@ public class Database
             var conexion = new SQLiteAsyncConnection(path, storeDateTimeAsTicks: false);
 
             // Crea cada tabla SI NO EXISTE (si ya existe, no hace nada).
-            await conexion.CreateTableAsync<Comision>();
-            await conexion.CreateTableAsync<Estudiante>();
-            await conexion.CreateTableAsync<Clase>();
-            await conexion.CreateTableAsync<Asistencia>();
-            await conexion.CreateTableAsync<Trabajo>();
-            await conexion.CreateTableAsync<Entrega>();
-            await conexion.CreateTableAsync<Contacto>();
+            await conexion.CreateTableAsync<ComisionRegistro>();
+            await conexion.CreateTableAsync<EstudianteRegistro>();
+            await conexion.CreateTableAsync<ClaseRegistro>();
+            await conexion.CreateTableAsync<AsistenciaRegistro>();
+            await conexion.CreateTableAsync<TrabajoRegistro>();
+            await conexion.CreateTableAsync<EntregaRegistro>();
+            await conexion.CreateTableAsync<ContactoRegistro>();
 
             await SeedAsync(conexion);
 
@@ -61,12 +60,12 @@ public class Database
     // Datos iniciales: si no hay comisiones, crea dos de ejemplo.
     private static async Task SeedAsync(SQLiteAsyncConnection db)
     {
-        if (await db.Table<Comision>().CountAsync() == 0)
+        if (await db.Table<ComisionRegistro>().CountAsync() == 0)
         {
             await db.InsertAllAsync(new[]
             {
-                new Comision { Nombre = "Ingeniería 2026", CicloLectivo = 2026, Cuatrimestre = 1 },
-                new Comision { Nombre = "Informática 2026", CicloLectivo = 2026, Cuatrimestre = 1 }
+                new ComisionRegistro { Nombre = "Ingeniería 2026", CicloLectivo = 2026, Cuatrimestre = 1 },
+                new ComisionRegistro { Nombre = "Informática 2026", CicloLectivo = 2026, Cuatrimestre = 1 }
             });
         }
     }
