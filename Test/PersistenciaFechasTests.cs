@@ -95,7 +95,10 @@ public class PersistenciaFechasTests
         var repositorio = new EstudianteRepositorioSQL(NuevaBase());
         await repositorio.AgregarAsync(new Estudiante
         {
-            ComisionId = 1, Apellido = "Gomez", Nombre = "Martin", Legajo = "12345",
+            ComisionId = 1,
+            Apellido = "Gomez",
+            Nombre = "Martin",
+            Legajo = "12345",
             FechaIncorporacion = new DateTime(2026, 3, 9)
         });
 
@@ -113,8 +116,8 @@ public class PersistenciaFechasTests
         foreach (var legajo in new[] { "1", "2", "3" })
             await repositorio.AgregarAsync(new Estudiante { ComisionId = 1, Apellido = "A" + legajo, Nombre = "N", Legajo = legajo });
 
-        var algunos = await db.QueryPorIdsAsync<Estudiante>("Estudiantes", "Id", new[] { 1, 3 });
-        var ninguno = await db.QueryPorIdsAsync<Estudiante>("Estudiantes", "Id", Array.Empty<int>());
+        var algunos = await db.QueryPorIdsAsync<EstudianteRegistro>("Estudiantes", "Id", new[] { 1, 3 });
+        var ninguno = await db.QueryPorIdsAsync<EstudianteRegistro>("Estudiantes", "Id", Array.Empty<int>());
 
         CollectionAssert.AreEquivalent(new[] { 1, 3 }, algunos.Select(e => e.Id).ToArray());
         Assert.AreEqual(0, ninguno.Count);
