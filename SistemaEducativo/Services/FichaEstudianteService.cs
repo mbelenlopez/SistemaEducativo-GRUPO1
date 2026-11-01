@@ -1,3 +1,4 @@
+using SistemaEducativo.Entidades;
 using SistemaEducativo.Repositorios;
 
 namespace SistemaEducativo.Services;
@@ -79,9 +80,9 @@ public class FichaEstudianteService
             Estudiante: estudiante,
             Riesgo: riesgo,
             ClasesRegistradas: asistencias.Count,
-            Ausencias: asistencias.Count(a => a.Condicion == "Ausente"),
+            Ausencias: asistencias.Count(a => a.Condicion == CondicionAsistencia.Ausente),
             TrabajosRegistrados: entregas.Count,
-            NoEntregados: entregas.Count(e => e.Condicion == "No entregado"),
+            NoEntregados: entregas.Count(e => e.Condicion == CondicionEntrega.NoEntregado),
             UmbralInasistencias: _riesgo.UmbralInasistencias,
             UmbralNoEntregados: _riesgo.UmbralNoEntregados,
             Asistencias: detalleAsistencias,

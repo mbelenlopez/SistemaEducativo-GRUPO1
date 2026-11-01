@@ -1,23 +1,17 @@
-﻿using SQLite;
+﻿namespace SistemaEducativo.Entidades;
 
-namespace SistemaEducativo.Entidades;
-
-// Un contacto del tutor con un estudiante (llamada, mensaje, etc.).
-// H9 solo los LEE para mostrarlos en la ficha; H10 es la que los registra.
-[Table("Contactos")]
+// Un contacto del tutor con un estudiante (llamada, mensaje, email).
+// H9 los muestra en la ficha; H10 los registra.
 public class Contacto
 {
-    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
-    [Indexed, NotNull]
     public int EstudianteId { get; set; }
 
-    [NotNull]
     public DateTime Fecha { get; set; }
 
+    // Una de las constantes de TiposContacto.
     public string Tipo { get; set; } = string.Empty;
 
-    [NotNull]
     public string Resultado { get; set; } = string.Empty;
 }

@@ -2,6 +2,7 @@
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SistemaEducativo.Entidades;
 using SistemaEducativo.Services;
 
 namespace SistemaEducativo.ViewModel;
@@ -144,7 +145,7 @@ public partial class FichaEstudianteViewModel : ViewModelBase, IQueryAttributabl
             new EntregaFila(
                 e.Trabajo,
                 $"Fecha límite: {Formatear(e.FechaLimite)}",
-                e.Condicion == "Entregado" ? "🟢 Entregado" : "🔴 No entregado")));
+                e.Condicion == CondicionEntrega.Entregado ? "🟢 Entregado" : "🔴 No entregado")));
 
         Reemplazar(Contactos, ficha.Contactos.Select(c =>
             new ContactoFila(Formatear(c.Fecha), c.Resultado)));
