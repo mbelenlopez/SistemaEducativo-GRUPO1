@@ -8,11 +8,22 @@ namespace SistemaEducativo.Repositorios
 
         public TrabajoRepositorioSQL(Database db) => _db = db;
 
-        public Task AgregarAsync(Trabajo trabajo) => _db.InsertAsync(trabajo);
+        public async Task AgregarAsync(Trabajo trabajo)
+        {
+            var trabajoRegistro = TrabajoRegistro.Desde(trabajo);
 
-        public Task<List<Trabajo>> ObtenerPorComisionAsync(int comisionId) =>
-            _db.QueryAsync<Trabajo>(
+            await _db.InsertAsync(trabajoRegistro);
+
+            trabajo.Id = trabajoRegistro.Id;
+        }
+
+        public async Task<List<Trabajo>> ObtenerPorComisionAsync(int comisionId)
+        {
+            var trabajos = await _db.QueryAsync<TrabajoRegistro>(
                 "SELECT * FROM Trabajos WHERE ComisionId = ? ORDER BY FechaLimite, Titulo",
                 comisionId);
+
+            return trabajos.Select(t => t.ToEntidad()).ToList();
+        }
     }
 }

@@ -83,7 +83,7 @@ public partial class TrabajoViewModel : ViewModelBase
         {
             var registro = registros.FirstOrDefault(x => x.EstudianteId == estudiante.Id);
             // Si el estudiante se incorporó después de registrar el trabajo, no tiene dato: "Sin datos".
-            Items.Add(new EntregaItem(estudiante, registro?.Condicion == "Entregado", registro?.Condicion ?? "Sin datos"));
+            Items.Add(new EntregaItem(estudiante, registro?.Condicion == CondicionEntrega.Entregado, registro?.Condicion ?? "Sin datos"));
         }
 
         Mensaje = registros.Count > 0
