@@ -3,16 +3,12 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaEducativo.Entidades;
 
-[Table("Clases")]
 public class Clase
 {
-    [PrimaryKey, AutoIncrement]
     public int Id { get; set; }
 
-    [Indexed, NotNull]
     public int ComisionId { get; set; }
 
-    [NotNull]
     public DateTime Fecha { get; set; }
 
     public string FechaFormateada => Fecha.ToString("dd/MM/yyyy");
