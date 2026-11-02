@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SistemaEducativo.View.MainPage"
+    BackgroundColor="#F7F9FC"
+    Title="Inicio">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="20">
+
+            <Border Style="{StaticResource Tarjeta}" Padding="30">
+                <VerticalStackLayout Spacing="12">
+                    <Border BackgroundColor="#E9F1FF" StrokeThickness="0" Padding="10,5" HorizontalOptions="Start">
+                        <Label Text="INICIO DE DEMOSTRACIÓN" FontSize="11" FontAttributes="Bold" TextColor="#2563EB" />
+                    </Border>
+                    <Label Text="Sistema de Seguimiento y Alerta Temprana de Estudiantes" FontSize="28" FontAttributes="Bold" TextColor="#172033" />
+                    <Label Text="Cargá la nómina, registrá asistencia y entregas, y obtené la lista de a quién conviene llamar esta semana." FontSize="15" TextColor="#607086" />
+
+                    <Label Text="COMISIÓN ACTIVA" FontSize="11" FontAttributes="Bold" TextColor="#7B8794" Margin="0,8,0,0" />
+                    <Picker Title="Seleccioná una comisión"
+                            ItemsSource="{Binding Comisiones}"
+                            ItemDisplayBinding="{Binding Nombre}"
+                            SelectedItem="{Binding ComisionSeleccionada}" />
+
+                    <HorizontalStackLayout Spacing="10" Margin="0,8,0,0">
+                        <Button Text="Iniciar Paso 1 (Nómina)  →" Clicked="OnIrANomina" Style="{StaticResource PrimaryButton}" />
+                        <Button Text="Ver modelo de dominio" Command="{Binding AlternarModeloCommand}" Style="{StaticResource SecondaryButton}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
+                <Border Grid.Column="0" Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="👥" FontSize="28" />
+                        <Label Text="1. Nómina y asistencia" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="Estudiantes de la comisión, fechas de clase y condición de asistencia: presente o ausente." TextColor="#607086" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="▰" FontSize="28" />
+                        <Label Text="2. Trabajos y entregas" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="Trabajos prácticos con fecha límite y registro de quién entregó cada uno." TextColor="#607086" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="2" Style="{StaticResource Tarjeta}">
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="⚠" FontSize="28" />
+                        <Label Text="3. Riesgo y panel" FontSize="18" FontAttributes="Bold" />
+                        <Label Text="Cruza inasistencias y entregas, y ordena a los estudiantes de mayor a menor riesgo." TextColor="#607086" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Tarjeta}" IsVisible="{Binding MostrarModelo}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="MODELO DE DOMINIO IMPLEMENTADO" FontSize="12" FontAttributes="Bold" TextColor="#2563EB" />
+                    <Label Text="Comisión → Estudiante → Asistencia / Entrega" FontSize="18" FontAttributes="Bold" />
+                    <Label Text="La comisión contiene clases y trabajos. Cada estudiante acumula una asistencia por clase y una entrega por trabajo. El riesgo se calcula a partir de esos dos datos." TextColor="#607086" />
+                </VerticalStackLayout>
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

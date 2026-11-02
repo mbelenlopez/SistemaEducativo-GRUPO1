@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:SistemaEducativo.ViewModel"
+             x:Class="SistemaEducativo.View.TrabajoPage"
+             x:DataType="viewmodel:TrabajoViewModel"
+             Title="Trabajos">
+    <ScrollView>
+        <VerticalStackLayout Padding="30" Spacing="15">
+            <Label 
+                Text="TRABAJOS Y ENTREGAS"
+                Style="{StaticResource TituloPagina}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center" />
+            <Label
+                Text="{Binding Sesion.ComisionActualNombre, StringFormat='Comisión: {0}'}"
+                Style="{StaticResource Subtitulo}"/>
+
+            <Border Style="{StaticResource Tarjeta}">
+                <Grid ColumnDefinitions="*, Auto, Auto"
+                      ColumnSpacing="10">
+                    <Entry
+                        Grid.Column="0"
+                        Placeholder="Título del trabajo"
+                        Text="{Binding Titulo}"/>
+                    <DatePicker
+                        Grid.Column="1"
+                        Date="{Binding FechaLimite}"/>
+                    <Button
+                        Grid.Column="2"
+                        Text="+ Crear trabajo"
+                        Command="{Binding CrearCommand}"/>
+                </Grid>
+            </Border>
+            <Label
+                Text="{Binding Mensaje}"
+                Style="{StaticResource MensajeEstado}"/>
+            
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
