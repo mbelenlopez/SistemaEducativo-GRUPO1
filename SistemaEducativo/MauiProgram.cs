@@ -1,45 +1,25 @@
-﻿using SistemaEducativo.Repositorios;
-using SistemaEducativo.Services;
-using SistemaEducativo.View;
-using SistemaEducativo.ViewModel;
+﻿using Microsoft.Extensions.Logging;
 
-namespace SistemaEducativo;
-
-public static class MauiProgram
+namespace SistemaEducativo
 {
-    public static MauiApp CreateMauiApp()
+    public static class MauiProgram
     {
-        var builder = MauiApp.CreateBuilder();
+        public static MauiApp CreateMauiApp()
+        {
+            var builder = MauiApp.CreateBuilder();
+            builder
+                .UseMauiApp<App>()
+                .ConfigureFonts(fonts =>
+                {
+                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                });
 
-        builder.UseMauiApp<App>();
+#if DEBUG
+    		builder.Logging.AddDebug();
+#endif
 
-        // ---- Datos: una sola conexión a SQLite compartida por todos los repositorios ----
-        builder.Services.AddSingleton<Database>();
-
-        // ---- Repositorios: cada interfaz (puerto) se conecta con su implementación SQL ----
-        builder.Services.AddSingleton<ComisionRepositorio, ComisionRepositorioSQL>();
-        builder.Services.AddSingleton<EstudianteRepositorio, EstudianteRepositorioSQL>();
-        builder.Services.AddSingleton<ClaseRepositorio, ClaseRepositorioSQL>();
-        builder.Services.AddSingleton<TrabajoRepositorio, TrabajoRepositorioSQL>(); 
-
-        // ---- Services: la lógica de negocio ----
-        builder.Services.AddSingleton<ComisionService>();
-        builder.Services.AddSingleton<EstudianteService>();
-        builder.Services.AddSingleton<CalendarioService>();
-        builder.Services.AddSingleton<TrabajoService>();
-        // ---- ViewModel: el estado y las acciones de cada página ----
-        builder.Services.AddSingleton<SesionActual>();
-        builder.Services.AddSingleton<MainViewModel>();
-        builder.Services.AddSingleton<NominaViewModel>();
-        builder.Services.AddSingleton<CalendarioViewModel>();
-        builder.Services.AddSingleton<TrabajoViewModel>();
-
-        // ---- View: las páginas (el AppShell las abre desde el menú lateral) ----
-        builder.Services.AddTransient<MainPage>();
-        builder.Services.AddTransient<NominaPage>();
-        builder.Services.AddTransient<CalendarioPage>();
-        builder.Services.AddTransient<TrabajoPage>(); 
-
-        return builder.Build();
+            return builder.Build();
+        }
     }
 }

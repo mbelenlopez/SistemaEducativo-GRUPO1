@@ -1,15 +1,15 @@
-﻿namespace SistemaEducativo;
-
-public partial class App : Application
+﻿namespace SistemaEducativo
 {
-    public App()
+    public partial class App : Application
     {
-        InitializeComponent();
-    }
+        public App()
+        {
+            InitializeComponent();
+        }
 
-    // La ventana arranca con el AppShell, que arma el menú lateral y la navegación entre páginas.
-    protected override Window CreateWindow(IActivationState? activationState)
-    {
-        return new Window(new AppShell());
+        protected override Window CreateWindow(IActivationState? activationState)
+        {
+            return new Window(new AppShell());
+        }
     }
 }
