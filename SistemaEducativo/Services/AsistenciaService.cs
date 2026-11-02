@@ -46,7 +46,7 @@ namespace SistemaEducativo.Services
                 {
                     ClaseId = claseId,
                     EstudianteId = estudiante.Id,
-                    Condicion = ids.Contains(estudiante.Id) ? "Presente" : "Ausente"
+                    Condicion = ids.Contains(estudiante.Id) ? CondicionAsistencia.Presente : CondicionAsistencia.Ausente
                 };
                 await _asistenciaRepositorio.AgregarAsync(asistencia);
             }
@@ -65,7 +65,7 @@ namespace SistemaEducativo.Services
                 var asistenciaReg = asistenciasExistentes.FirstOrDefault(a => a.EstudianteId == estudiante.Id);
 
                 bool presente = estados.TryGetValue(estudiante.Id, out var p) && p;
-                string nuevaCondicion = presente ? "Presente" : "Ausente";
+                string nuevaCondicion = presente ? CondicionAsistencia.Presente : CondicionAsistencia.Ausente;
 
                 if (asistenciaReg != null)
                 {
