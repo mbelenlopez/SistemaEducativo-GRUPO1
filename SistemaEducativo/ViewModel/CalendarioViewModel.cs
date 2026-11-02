@@ -1,58 +1,48 @@
-﻿
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SistemaEducativo.Entidades;
 using SistemaEducativo.Services;
-using System.Collections.ObjectModel;
 
-namespace SistemaEducativo.ViewModel
+namespace SistemaEducativo.ViewModel;
+
+// H2: definir las clases (fechas) del cuatrimestre.
+public partial class CalendarioViewModel : ViewModelBase
 {
-    public partial class CalendarioViewModel : ViewModelBase
+    private readonly CalendarioService _calendarioService;
+
+    public CalendarioViewModel(SesionActual sesion, CalendarioService calendarioService) : base(sesion)
     {
-        private readonly CalendarioService _calendarioService;
-        public CalendarioViewModel(SesionActual sesion, CalendarioService service) : base(sesion)
+        _calendarioService = calendarioService;
+    }
+
+    public ObservableCollection<Clase> Clases { get; } = new();
+
+    [ObservableProperty]
+    private DateTime fecha = DateTime.Today;
+
+    [RelayCommand]
+    public async Task CargarAsync()
+    {
+        if (FaltaElegirComision())
         {
-            _calendarioService = service;
-        }
-
-        public ObservableCollection<Clase> Clases { get; } = new();
-
-        [ObservableProperty]
-        private DateTime fecha = DateTime.Today;
-
-        [RelayCommand]
-        public async Task CargarAsync()
-        {
-
-            if (!Sesion.HayComision)
-            {
-                Mensaje = SinComision;
-                return;
-            }
-
             Clases.Clear();
-
-            foreach (var clase in await _calendarioService.ObtenerClasesAsync(ComisionId))
-                Clases.Add(clase);
-
+            return;
         }
 
-        [RelayCommand]
-        public async Task AgregarAsync()
-        {
-            if (!Sesion.HayComision)
-            {
-                Mensaje = SinComision;
-                return;
-            }
+        Reemplazar(Clases, await _calendarioService.ObtenerClasesAsync(ComisionId));
+    }
 
-            var resultado = await _calendarioService.AgregarClaseAsync(
-                ComisionId,
-                Fecha);
-            Mensaje = resultado.Mensaje;
+    [RelayCommand]
+    public async Task AgregarAsync()
+    {
+        if (FaltaElegirComision())
+            return;
 
-            if (resultado.Exito)
-                await CargarAsync();
-        }
+        var resultado = await _calendarioService.AgregarClaseAsync(ComisionId, Fecha);
+        Mensaje = resultado.Mensaje;
+
+        if (resultado.Exito)
+            await CargarAsync();
     }
 }

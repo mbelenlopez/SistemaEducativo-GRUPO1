@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace SistemaEducativo.Entidades;
 
@@ -11,5 +10,7 @@ public class Clase
 
     public DateTime Fecha { get; set; }
 
+    // Para mostrar en pantalla. [Ignore]: no es una columna de la tabla.
+    [Ignore]
     public string FechaFormateada => Fecha.ToString("dd/MM/yyyy");
 }

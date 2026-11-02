@@ -49,11 +49,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <MauiXaml Update="View\AsistenciaPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
     <MauiXaml Update="View\CalendarioPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </MauiXaml>
+    <MauiXaml Update="View\RiesgoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
     <MauiXaml Update="View\TrabajoPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Platforms\Android\Resources" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+	</ItemGroup>
 </Project>

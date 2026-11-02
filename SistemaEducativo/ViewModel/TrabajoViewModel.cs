@@ -1,72 +1,54 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SistemaEducativo.Entidades;
 using SistemaEducativo.Services;
-using System.Collections.ObjectModel;
 
-namespace SistemaEducativo.ViewModel
+namespace SistemaEducativo.ViewModel;
+
+// H2: definir los trabajos (con su fecha límite) del cuatrimestre.
+// El registro de entregas (H5) se suma después sobre esta misma clase.
+public partial class TrabajoViewModel : ViewModelBase
 {
-    public partial class TrabajoViewModel : ViewModelBase
+    private readonly TrabajoService _trabajoService;
+    private readonly EntregaService _entregaService;
+    private readonly EstudianteService _estudianteService;
+
+    public TrabajoViewModel(SesionActual sesion, TrabajoService trabajoService,EntregaService entregaService,EstudianteService estudianteService) : base(sesion)
     {
-        private readonly TrabajoService _trabajoService;
-        public TrabajoViewModel(TrabajoService trabajoService, SesionActual sesion) : base(sesion)
+        _trabajoService = trabajoService;
+        _entregaService = entregaService;
+        _estudianteService = estudianteService;
+    }
+
+    public ObservableCollection<Trabajo> Trabajos { get; } = new();
+    public ObservableCollection<EntregaItem> Items { get; } = new();
+
+    [ObservableProperty]
+    private string titulo = string.Empty;
+
+    [ObservableProperty]
+    private DateTime fechaLimite = DateTime.Today.AddDays(7);
+
+    [ObservableProperty]
+    private  Trabajo? trabajoSeleccionado;
+
+    partial void OnTrabajoSeleccionadoChanged(Trabajo? value) => _ = CargarItemsAsync();
+
+
+    [RelayCommand]
+    public async Task CargarAsync()
+    {
+        var trabajoAnteriorId = TrabajoSeleccionado?.Id;
+        Trabajos.Clear();
+        Items.Clear();
+
+        if (FaltaElegirComision())
         {
-            _trabajoService = trabajoService;
-        }
-
-
-        public ObservableCollection<Trabajo> Trabajos { get; } = new();
-
-        [ObservableProperty]
-        private DateTime fechaLimite = DateTime.Today.AddDays(7);
-
-
-        [ObservableProperty]
-        private Trabajo? trabajoSeleccionado;
-
-
-        [ObservableProperty]
-        private string titulo = string.Empty;
-
-        [RelayCommand]
-        public async Task CrearAsync()
-        {
-            if (!Sesion.HayComision)
-            {
-                Mensaje = SinComision;
-                return;
-            }
-
-            var resultado = await _trabajoService.CrearAsync(
-                ComisionId,
-                Titulo,
-                FechaLimite
-                );
-            Mensaje = resultado.Mensaje;
-
-            if (!resultado.Exito)
-                return;
-            Titulo = string.Empty;
-            await CargarAsync();
-        }
-
-        [RelayCommand]
-        public async Task CargarAsync()
-        {
-            if (!Sesion.HayComision)
-            {
-                Mensaje = SinComision;
-                return;
-            }
-            var trabajos = await _trabajoService.ObtenerPorComisionAsync(ComisionId);
-
             Trabajos.Clear();
-            foreach (var trabajo in trabajos) 
-                Trabajos.Add(trabajo);
+            return;
         }
 
-<<<<<<< Updated upstream
-=======
         Reemplazar(Trabajos, await _trabajoService.ObtenerPorComisionAsync(ComisionId));
         TrabajoSeleccionado = Trabajos.FirstOrDefault(t => t.Id == trabajoAnteriorId);
     }
@@ -133,6 +115,5 @@ namespace SistemaEducativo.ViewModel
             await CargarItemsAsync();
 
         Mensaje = resultado.Mensaje;
->>>>>>> Stashed changes
     }
 }
