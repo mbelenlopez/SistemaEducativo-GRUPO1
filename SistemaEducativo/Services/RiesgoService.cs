@@ -1,4 +1,5 @@
-﻿using SistemaEducativo.Repositorios;
+﻿using SistemaEducativo.Entidades;
+using SistemaEducativo.Repositorios;
 
 namespace SistemaEducativo.Services
 {
@@ -31,9 +32,9 @@ namespace SistemaEducativo.Services
 
             return _calculadoraRiesgo.Calcular(
                 clasesTotales: asistencia.Count,
-                ausencias: asistencia.Count(a => a.Condicion == "Ausente"),
+                ausencias: asistencia.Count(a => a.Condicion == CondicionAsistencia.Ausente),
                 trabajosTotales: entregas.Count,
-                noEntregados: entregas.Count(e => e.Condicion == "No entregado"),
+                noEntregados: entregas.Count(e => e.Condicion == CondicionEntrega.NoEntregado),
                 umbralInasistencias: UmbralInasistencias,
                 umbralNoEntregados: UmbralNoEntregados
             );
@@ -52,6 +53,15 @@ namespace SistemaEducativo.Services
 
             return resultado;
         }
+
+        // El panel de riesgo: todos los estudiantes de la comisión ya calculados y ORDENADOS
+        // (primero riesgo alto, luego el más grave, luego por nombre).
+        public async Task<List<EstudianteConRiesgo>> ObtenerPanelAsync(int comisionId) =>
+            (await CalcularComisionAsync(comisionId))
+                .OrderBy(e => e.Riesgo.Prioridad)
+                .ThenByDescending(e => e.Riesgo.Puntaje)
+                .ThenBy(e => e.Estudiante.NombreCompleto)
+                .ToList();
 
     }
 }
