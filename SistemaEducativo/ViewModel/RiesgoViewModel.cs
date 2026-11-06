@@ -28,6 +28,10 @@ namespace SistemaEducativo.ViewModel
         [RelayCommand]
         public async Task RecalcularAsync()
         {
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             Items.Clear();
 
             if (FaltaElegirComision())

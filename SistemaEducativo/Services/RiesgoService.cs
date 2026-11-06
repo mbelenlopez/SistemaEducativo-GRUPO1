@@ -21,6 +21,20 @@
             _entregaRepositorio = entregaRepositorio;
             _calculadoraRiesgo = calculadoraRiesgo;
         }
+<<<<<<< Updated upstream
+=======
+
+
+        // Lee los umbrales vigentes y los deja en UmbralInasistencias / UmbralNoEntregados.
+        public async Task<UmbralesRiesgo> CargarUmbralesAsync()
+        {
+            var umbrales = await _configuracion.ObtenerAsync();
+            UmbralInasistencias = umbrales.Inasistencias;
+            UmbralNoEntregados = umbrales.NoEntregados;
+            return umbrales;
+        }
+
+>>>>>>> Stashed changes
         // Calcula el riesgo de un estudiante basado en su id
         public async Task<ResultadoRiesgo> CalcularAsync(int estudianteId)
         {
