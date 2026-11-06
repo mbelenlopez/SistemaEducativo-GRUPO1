@@ -6,12 +6,11 @@ using System.Collections.ObjectModel;
 namespace SistemaEducativo.ViewModel
 {
     public partial class RiesgoViewModel : ViewModelBase
-    {
-        private readonly EstudianteService _estudianteServicio;
+    {  
         private readonly RiesgoService _riesgoServicio;
-        public RiesgoViewModel(SesionActual sesion, EstudianteService estudianteServicio, RiesgoService riesgoServicio) : base(sesion)
+
+        public RiesgoViewModel(SesionActual sesion, RiesgoService riesgoServicio) : base(sesion)
         {
-            _estudianteServicio = estudianteServicio;
             _riesgoServicio = riesgoServicio;
         }
 
@@ -21,52 +20,44 @@ namespace SistemaEducativo.ViewModel
             $"Riesgo ALTO si las inasistencias llegan a {_riesgoServicio.UmbralInasistencias:0}%" +
             $" o los trabajos no entregados al {_riesgoServicio.UmbralNoEntregados:0}%.";
 
-
         [RelayCommand]
         public async Task CargarAsync() => RecalcularAsync();
 
         [RelayCommand]
         public async Task RecalcularAsync()
         {
+            // H7: antes de calcular se leen los umbrales vigentes y se actualiza el texto que los muestra.
+            await _riesgoServicio.CargarUmbralesAsync();
+            OnPropertyChanged(nameof(UmbralesTexto));
+
             Items.Clear();
 
             if (FaltaElegirComision())
-            {
                 return;
-            }
 
-            var estudiantes = await _estudianteServicio.ObtenerPorComisionAsync(ComisionId);
-            Mensaje = estudiantes.Count == 0 ? "Todavía no hay estudiantes en esta comisión." : string.Empty;
+            var panel = await _riesgoServicio.ObtenerPanelAsync(ComisionId);   // ya viene calculado y ordenado
+            Mensaje = panel.Count == 0 ? "Todavía no hay estudiantes en esta comisión." : string.Empty;
 
-            var filas = new List<PanelItem>();
-
-            foreach(var estudiante in estudiantes)
-            {
-                var riesgo = await _riesgoServicio.CalcularAsync(estudiante.Id);
-
-                filas.Add(new PanelItem
-                {
-                    EstudianteId = estudiante.Id,
-                    NombreCompleto = estudiante.NombreCompleto,
-                    InasistenciasTexto = $"Inasistencias: {riesgo.PorcentajeInasistencias:0}%",
-                    EntregaTexto = $"No entregas: {riesgo.PorcentajeNoEntregados:0}%",
-                    Nivel = riesgo.Nivel,
-                    NivelTexto = riesgo.Nivel switch
-                    {
-                        "Alto" => "🔴 Alto",
-                        "Bajo" => "🟢 Bajo",
-                        _ => "⚪ Sin datos"
-                    },
-                    Puntaje = Math.Max(riesgo.PorcentajeInasistencias, riesgo.PorcentajeNoEntregados)
-                });
-            }
-            var filasOrdenadas = filas.OrderBy(f => f.Prioridad).ThenByDescending(f => f.Puntaje).ThenBy(f => f.NombreCompleto);
-
-            foreach(var fila in filasOrdenadas)
-            {
-                Items.Add(fila);
-            }
+            foreach (var item in panel)
+                Items.Add(ArmarFila(item));
         }
+
+        // Pasa del dato de negocio al texto que se ve en pantalla.
+        private static PanelItem ArmarFila(EstudianteConRiesgo item) => new()
+        {
+            EstudianteId = item.Estudiante.Id,
+            NombreCompleto = item.Estudiante.NombreCompleto,
+            InasistenciasTexto = $"Inasistencias: {item.Riesgo.PorcentajeInasistencias:0}%",
+            EntregaTexto = $"No entregas: {item.Riesgo.PorcentajeNoEntregados:0}%",
+            NivelTexto = TextoDelNivel(item.Riesgo.Nivel)
+        };
+
+        private static string TextoDelNivel(string nivel) => nivel switch
+        {
+            NivelRiesgo.Alto => "🔴 Alto",
+            NivelRiesgo.Bajo => "🟢 Bajo",
+            _ => "⚪ Sin datos"
+        };
 
     }
 }

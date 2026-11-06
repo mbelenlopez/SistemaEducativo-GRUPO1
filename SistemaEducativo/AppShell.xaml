@@ -26,6 +26,9 @@
     <FlyoutItem Title="Riesgo(H6)" Route="RiesgoPage">
         <ShellContent ContentTemplate="{DataTemplate view:RiesgoPage}"/>
     </FlyoutItem>
+	<FlyoutItem Title="Umbrales(H7)" Route="ConfiguracionRiesgoPage">
+		<ShellContent ContentTemplate="{DataTemplate view:ConfiguracionRiesgoPage}"/>
+	</FlyoutItem>
     <FlyoutItem Title="Contactos(H10)" Route="ContactoPage">
         <ShellContent ContentTemplate="{DataTemplate view:ContactoPage}"/>
     </FlyoutItem>

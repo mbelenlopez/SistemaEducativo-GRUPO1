@@ -23,6 +23,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<TrabajoRepositorio, TrabajoRepositorioSQL>(); 
         builder.Services.AddSingleton<AsistenciaRepositorio, AsistenciaRepositorioSQL>();
         builder.Services.AddSingleton<EntregaRepositorio, EntregaRepositorioSQL>();
+        builder.Services.AddSingleton<ConfiguracionRiesgoRepositorio, ConfiguracionRiesgoRepositorioSQL>();
         builder.Services.AddSingleton<ContactoRepositorio, ContactoRepositorioSQL>();
 
 
@@ -33,7 +34,9 @@ public static class MauiProgram
         builder.Services.AddSingleton<TrabajoService>();
         builder.Services.AddSingleton<AsistenciaService>();
         builder.Services.AddSingleton<CalculadoraRiesgo>();
+        builder.Services.AddSingleton<ConfiguracionRiesgoService>();
         builder.Services.AddSingleton<RiesgoService>();
+        builder.Services.AddSingleton<RecalculoRiesgoService>();
         builder.Services.AddSingleton<EntregaService>();
         builder.Services.AddSingleton<FichaEstudianteService>();
         builder.Services.AddSingleton<ContactoService>();
@@ -46,6 +49,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<TrabajoViewModel>();
         builder.Services.AddSingleton<AsistenciaViewModel>();
         builder.Services.AddSingleton<RiesgoViewModel>();
+        builder.Services.AddSingleton<ConfiguracionRiesgoViewModel>();
         builder.Services.AddTransient<FichaEstudianteViewModel>();   // uno nuevo por ficha: no arrastra datos de otro estudiante
         builder.Services.AddSingleton<ContactoViewModel>();
 
@@ -56,6 +60,7 @@ public static class MauiProgram
         builder.Services.AddTransient<TrabajoPage>();
         builder.Services.AddTransient<AsistenciaPage>();
         builder.Services.AddTransient<RiesgoPage>();
+        builder.Services.AddTransient<ConfiguracionRiesgoPage>();
         builder.Services.AddTransient<FichaEstudiantePage>();
         builder.Services.AddTransient<ContactoPage>();
 
