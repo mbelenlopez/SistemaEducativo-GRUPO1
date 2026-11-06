@@ -70,7 +70,7 @@ namespace SistemaEducativo.ViewModel
             foreach(var estudiante in estudiantes)
             {
                 var registro = registros.FirstOrDefault(r => r.EstudianteId == estudiante.Id);
-                Items.Add(new AsistenciaItem(estudiante, registro?.Condicion == "Presente"));
+                Items.Add(new AsistenciaItem(estudiante, registro?.Condicion == CondicionAsistencia.Presente));
             }
 
             Mensaje = registros.Count() > 0

@@ -8,11 +8,6 @@ namespace SistemaEducativo.Tests;
 [TestClass]
 public class AsistenciaServiceTests
 {   
-    enum CondicionAsistencia
-    {
-        Presente,
-        Ausente
-    }
     private sealed class Escenario
     {
         public AsistenciaRepositorioFake Asistencias { get; } = new();
