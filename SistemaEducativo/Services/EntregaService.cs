@@ -1,4 +1,5 @@
 ﻿using SistemaEducativo.Entidades;
+using SistemaEducativo.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;

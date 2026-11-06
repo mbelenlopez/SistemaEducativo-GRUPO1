@@ -1,30 +1,34 @@
-﻿namespace SistemaEducativo.Services
+﻿using SistemaEducativo.Entidades;
+using SistemaEducativo.Repositorios;
+
+namespace SistemaEducativo.Services
 {
     public class RiesgoService
     {
-        
-        public double UmbralInasistencias = 50;
-        public double UmbralNoEntregados = 50;
+        // Umbrales vigentes (H7): los que configuró el tutor o, si nunca configuró nada, los de por defecto (50%).
+        // Se refrescan en cada cálculo y se exponen para que las pantallas puedan mostrarlos.
+        public double UmbralInasistencias { get; private set; } = ConfiguracionRiesgoService.UmbralPorDefecto;
+        public double UmbralNoEntregados { get; private set; } = ConfiguracionRiesgoService.UmbralPorDefecto;
+
         private readonly AsistenciaRepositorio _asistenciaRepositorio;
         private readonly EstudianteRepositorio _estudianteRepositorio;
         private readonly EntregaRepositorio _entregaRepositorio;
         private readonly CalculadoraRiesgo _calculadoraRiesgo;
-    
+        private readonly ConfiguracionRiesgoService _configuracion;
+
         public RiesgoService(
             AsistenciaRepositorio asistenciaRepositorio,
             EstudianteRepositorio estudianteRepositorio,
             EntregaRepositorio entregaRepositorio,
-            CalculadoraRiesgo calculadoraRiesgo)
+            CalculadoraRiesgo calculadoraRiesgo,
+            ConfiguracionRiesgoService configuracion)
         {
             _asistenciaRepositorio = asistenciaRepositorio;
             _estudianteRepositorio = estudianteRepositorio;
             _entregaRepositorio = entregaRepositorio;
             _calculadoraRiesgo = calculadoraRiesgo;
+            _configuracion = configuracion;
         }
-<<<<<<< Updated upstream
-=======
-
-
         // Lee los umbrales vigentes y los deja en UmbralInasistencias / UmbralNoEntregados.
         public async Task<UmbralesRiesgo> CargarUmbralesAsync()
         {
@@ -34,25 +38,17 @@
             return umbrales;
         }
 
->>>>>>> Stashed changes
         // Calcula el riesgo de un estudiante basado en su id
         public async Task<ResultadoRiesgo> CalcularAsync(int estudianteId)
         {
-            var asistencia = await _asistenciaRepositorio.ObtenerPorEstudianteAsync(estudianteId);
-            var entregas = await _entregaRepositorio.ObtenerPorEstudianteAsync(estudianteId);
-
-            return _calculadoraRiesgo.Calcular(
-                clasesTotales: asistencia.Count,
-                ausencias: asistencia.Count(a => a.Condicion == "Ausente"),
-                trabajosTotales: entregas.Count,
-                noEntregados: entregas.Count(e => e.Condicion == "No entregado"),
-                umbralInasistencias: UmbralInasistencias,
-                umbralNoEntregados: UmbralNoEntregados
-            );
+            var umbrales = await CargarUmbralesAsync();
+            return await CalcularConUmbralesAsync(estudianteId, umbrales);
         }
+        
         // Calcula el riesgo de todos los estudiantes de una comisión
         public async Task<List<EstudianteConRiesgo>> CalcularComisionAsync(int comisionId)
         {
+            var umbrales = await CargarUmbralesAsync();
             var estudiantes = await _estudianteRepositorio.ObtenerPorComisionAsync(comisionId);
             var resultado = new List<EstudianteConRiesgo>();
 
@@ -63,6 +59,30 @@
             }
 
             return resultado;
+        }
+
+        // El panel de riesgo: todos los estudiantes de la comisión ya calculados y ORDENADOS
+        // (primero riesgo alto, luego el más grave, luego por nombre).
+        public async Task<List<EstudianteConRiesgo>> ObtenerPanelAsync(int comisionId) =>
+            (await CalcularComisionAsync(comisionId))
+                .OrderBy(e => e.Riesgo.Prioridad)
+                .ThenByDescending(e => e.Riesgo.Puntaje)
+                .ThenBy(e => e.Estudiante.NombreCompleto)
+                .ToList();
+
+        private async Task<ResultadoRiesgo> CalcularConUmbralesAsync(int estudianteId, UmbralesRiesgo umbrales)
+        {
+            var asistencia = await _asistenciaRepositorio.ObtenerPorEstudianteAsync(estudianteId);
+            var entregas = await _entregaRepositorio.ObtenerPorEstudianteAsync(estudianteId);
+
+            return _calculadoraRiesgo.Calcular(
+                clasesTotales: asistencia.Count,
+                ausencias: asistencia.Count(a => a.Condicion == CondicionAsistencia.Ausente),
+                trabajosTotales: entregas.Count,
+                noEntregados: entregas.Count(e => e.Condicion == CondicionEntrega.NoEntregado),
+                umbralInasistencias: umbrales.Inasistencias,
+                umbralNoEntregados: umbrales.NoEntregados
+            );
         }
 
     }

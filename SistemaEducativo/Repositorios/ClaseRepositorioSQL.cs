@@ -1,5 +1,4 @@
 ﻿using SistemaEducativo.Entidades;
-using SistemaEducativo.Services;
 
 namespace SistemaEducativo.Repositorios
 {
@@ -8,18 +7,30 @@ namespace SistemaEducativo.Repositorios
         private readonly Database _db;
         public ClaseRepositorioSQL(Database db) => _db = db;
 
-        public Task AgregarAsync(Clase clase) => _db.InsertAsync(clase);
+        public async Task AgregarAsync(Clase clase)
+        {
+            var claseRegistro = ClaseRegistro.Desde(clase);
+
+            await _db.InsertAsync(claseRegistro);
+
+            clase.Id = claseRegistro.Id;
+        }
 
         public async Task<bool> ExisteAsync(int comisionId, DateTime fecha)
         {
-            var lista = await _db.QueryAsync<Clase>(
+            var lista = await _db.QueryAsync<ClaseRegistro>(
                 "SELECT * FROM Clases WHERE ComisionId = ? AND Fecha = ?",
                 comisionId, fecha);
             return lista.Count > 0;
         }
 
-        public Task<List<Clase>> ObtenerPorComisionAsync(int comisionId)
-            => _db.QueryAsync<Clase>(
+        public async Task<List<Clase>> ObtenerPorComisionAsync(int comisionId)
+        {
+           var clases = await _db.QueryAsync<ClaseRegistro>(
                 "SELECT * FROM Clases WHERE ComisionId = ? ORDER BY Fecha", comisionId);
+
+            return clases.Select(c => c.ToEntidad()).ToList();
+        }
+            
     }
 }

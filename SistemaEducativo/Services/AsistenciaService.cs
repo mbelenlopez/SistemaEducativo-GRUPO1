@@ -1,4 +1,5 @@
 ﻿using SistemaEducativo.Entidades;
+using SistemaEducativo.Repositorios;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +12,13 @@ namespace SistemaEducativo.Services
     {
         private readonly AsistenciaRepositorio _asistenciaRepositorio;
         private readonly EstudianteRepositorio _estudianteRepositorio;
+        private readonly ClaseRepositorio _claseRepositorio;
 
-        public AsistenciaService(AsistenciaRepositorio asistenciaRepositorio, EstudianteRepositorio estudianteRepositorio)
+        public AsistenciaService(AsistenciaRepositorio asistenciaRepositorio, EstudianteRepositorio estudianteRepositorio, ClaseRepositorio claseRepositorio)
         {
             _asistenciaRepositorio = asistenciaRepositorio;
             _estudianteRepositorio = estudianteRepositorio;
+            _claseRepositorio = claseRepositorio;
         }
 
         public Task<List<Asistencia>> ObtenerAsistenciasPorClaseAsync(int claseId) =>
@@ -43,12 +46,46 @@ namespace SistemaEducativo.Services
                 {
                     ClaseId = claseId,
                     EstudianteId = estudiante.Id,
-                    Condicion = ids.Contains(estudiante.Id) ? "Presente" : "Ausente"
+                    Condicion = ids.Contains(estudiante.Id) ? CondicionAsistencia.Presente : CondicionAsistencia.Ausente
                 };
                 await _asistenciaRepositorio.AgregarAsync(asistencia);
             }
 
             return (true, "Asistencia registrada correctamente.");
+        }
+
+        public async Task<(bool, string Mensaje)> CorregirAsistenciaAsync(int claseId, int comisionId, Dictionary<int, bool> estados)
+        {
+            var asistenciasExistentes = await ObtenerAsistenciasPorClaseAsync(claseId);
+
+            var estudiantesComision = await _estudianteRepositorio.ObtenerPorComisionAsync(comisionId);
+
+            foreach (var estudiante in estudiantesComision)
+            {
+                var asistenciaReg = asistenciasExistentes.FirstOrDefault(a => a.EstudianteId == estudiante.Id);
+
+                bool presente = estados.TryGetValue(estudiante.Id, out var p) && p;
+                string nuevaCondicion = presente ? CondicionAsistencia.Presente : CondicionAsistencia.Ausente;
+
+                if (asistenciaReg != null)
+                {
+                    asistenciaReg.Condicion = nuevaCondicion;
+                    await _asistenciaRepositorio.CorregirAsistenciaAsync(asistenciaReg);
+                }
+                else
+                {
+                    var nuevaAsistencia = new Asistencia
+                    {
+                        ClaseId = claseId,
+                        EstudianteId = estudiante.Id,
+                        Condicion = nuevaCondicion
+                    };
+                    await _asistenciaRepositorio.AgregarAsync(nuevaAsistencia);
+                }
+
+            }
+
+            return (true, "Asistencia corregida y completada correctamente.");
         }
     }
 }
