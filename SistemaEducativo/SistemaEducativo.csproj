@@ -62,4 +62,12 @@
       <Generator>MSBuild:Compile</Generator>
     </MauiXaml>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Platforms\Android\Resources" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+	</ItemGroup>
 </Project>

@@ -1,5 +1,5 @@
 using SistemaEducativo.Entidades;
-using SistemaEducativo.Services;
+using SistemaEducativo.Repositorios;
 
 namespace SistemaEducativo.Tests;
 
@@ -17,6 +17,9 @@ public class EstudianteRepositorioFake : EstudianteRepositorio
 
     public Task<Estudiante?> ObtenerPorLegajoAsync(string legajo) =>
         Task.FromResult(Datos.FirstOrDefault(e => e.Legajo == legajo));
+
+    public Task<Estudiante?> ObtenerPorIdAsync(int id) =>
+        Task.FromResult(Datos.FirstOrDefault(e => e.Id == id));
 
     public Task AgregarAsync(Estudiante estudiante)
     {

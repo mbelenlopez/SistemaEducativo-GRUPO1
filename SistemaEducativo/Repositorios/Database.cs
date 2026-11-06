@@ -1,5 +1,4 @@
 ﻿using SQLite;
-using SistemaEducativo.Entidades;
 
 namespace SistemaEducativo.Repositorios;
 
@@ -38,12 +37,14 @@ public class Database
             var conexion = new SQLiteAsyncConnection(path, storeDateTimeAsTicks: false);
 
             // Crea cada tabla SI NO EXISTE (si ya existe, no hace nada).
-            await conexion.CreateTableAsync<Comision>();
-            await conexion.CreateTableAsync<Estudiante>();
-            await conexion.CreateTableAsync<Clase>();
-            await conexion.CreateTableAsync<Asistencia>();
-            await conexion.CreateTableAsync<Trabajo>();
-            await conexion.CreateTableAsync<Entrega>();
+            await conexion.CreateTableAsync<ComisionRegistro>();
+            await conexion.CreateTableAsync<EstudianteRegistro>();
+            await conexion.CreateTableAsync<ClaseRegistro>();
+            await conexion.CreateTableAsync<AsistenciaRegistro>();
+            await conexion.CreateTableAsync<TrabajoRegistro>();
+            await conexion.CreateTableAsync<EntregaRegistro>();
+            await conexion.CreateTableAsync<ContactoRegistro>();
+            await conexion.CreateTableAsync<ConfiguracionRiesgoRegistro>();
 
             await SeedAsync(conexion);
 
@@ -60,12 +61,12 @@ public class Database
     // Datos iniciales: si no hay comisiones, crea dos de ejemplo.
     private static async Task SeedAsync(SQLiteAsyncConnection db)
     {
-        if (await db.Table<Comision>().CountAsync() == 0)
+        if (await db.Table<ComisionRegistro>().CountAsync() == 0)
         {
             await db.InsertAllAsync(new[]
             {
-                new Comision { Nombre = "Ingeniería 2026", CicloLectivo = 2026, Cuatrimestre = 1 },
-                new Comision { Nombre = "Informática 2026", CicloLectivo = 2026, Cuatrimestre = 1 }
+                new ComisionRegistro { Nombre = "Ingeniería 2026", CicloLectivo = 2026, Cuatrimestre = 1 },
+                new ComisionRegistro { Nombre = "Informática 2026", CicloLectivo = 2026, Cuatrimestre = 1 }
             });
         }
     }
@@ -75,6 +76,12 @@ public class Database
     {
         var db = await GetConnectionAsync();
         return await db.InsertAsync(item);
+    }
+
+    public async Task<int> UpdateAsync<T>(T item) where T : new()
+    {
+        var db = await GetConnectionAsync();
+        return await db.UpdateAsync(item);
     }
 
     // Ejecuta un SELECT y devuelve las filas como objetos. Los "?" se reemplazan por los valores de args.
@@ -88,7 +95,7 @@ public class Database
     // (en lugar de una consulta por cada id). Los ids viajan como parámetros "?".
     // "tabla" y "columna" son nombres fijos escritos en el código de los repositorios, nunca texto del usuario.
     // Lo usa el panel de riesgo (H6/H8); se incluye ahora para que esa rama no tenga que tocar este archivo.
-    public async Task<List<T>> QueryPorIdsAsync<T>(string tabla, string columna, IReadOnlyCollection<int> ids) where T : new()
+    public async Task<List<T>>  QueryPorIdsAsync<T>(string tabla, string columna, IReadOnlyCollection<int> ids) where T : new()
     {
         var resultado = new List<T>();
 

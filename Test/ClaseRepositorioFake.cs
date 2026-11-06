@@ -1,5 +1,5 @@
 using SistemaEducativo.Entidades;
-using SistemaEducativo.Services;
+using SistemaEducativo.Repositorios;
 
 namespace SistemaEducativo.Tests;
 

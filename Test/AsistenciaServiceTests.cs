@@ -8,6 +8,7 @@ namespace SistemaEducativo.Tests;
 [TestClass]
 public class AsistenciaServiceTests
 {   
+
     private sealed class Escenario
     {
         public AsistenciaRepositorioFake Asistencias { get; } = new();
