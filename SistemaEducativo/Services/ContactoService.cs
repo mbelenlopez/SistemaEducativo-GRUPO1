@@ -5,6 +5,8 @@ namespace SistemaEducativo.Services;
 
 public class ContactoService
 {
+    // H11: un contacto de hasta estos días cuenta como "reciente" (la historia habla de "esta semana").
+    public const int DiasContactoReciente = 7;
     private readonly ContactoRepositorio _contactos;
 
     public ContactoService(ContactoRepositorio contactos) => _contactos = contactos;
@@ -32,4 +34,21 @@ public class ContactoService
 
         return (true, "Contacto registrado correctamente.");
     }
+
+    // H11: la fecha del último contacto de cada estudiante. Quien nunca fue contactado no aparece.
+    public async Task<Dictionary<int, DateTime>> ObtenerUltimosContactosAsync(IReadOnlyCollection<int> estudianteIds)
+    {
+        if (estudianteIds.Count == 0)
+            return new Dictionary<int, DateTime>();
+
+        var contactos = await _contactos.ObtenerPorEstudiantesAsync(estudianteIds);
+
+        return contactos
+            .GroupBy(c => c.EstudianteId)
+            .ToDictionary(grupo => grupo.Key, grupo => grupo.Max(c => c.Fecha));
+    }
+
+    // H11: ¿el último contacto es reciente? Es una regla del negocio, por eso vive acá y no en la pantalla.
+    public static bool EsReciente(DateTime ultimoContacto, DateTime hoy) =>
+        (hoy.Date - ultimoContacto.Date).TotalDays <= DiasContactoReciente;
 }
