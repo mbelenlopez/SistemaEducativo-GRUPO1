@@ -12,21 +12,24 @@
         <VerticalStackLayout Padding="30" Spacing="15">
             <Label Text="PANEL DE RIESGO" Style="{StaticResource TituloPagina}" />
             <Label Text="{Binding UmbralesTexto}" Style="{StaticResource Subtitulo}" />
-			<Label Text="Hace clic en un estudiante para ver su ficha." Style="{StaticResource Subtitulo}" />
-			
+            <Label Text="Hace clic en un estudiante para ver su ficha." Style="{StaticResource Subtitulo}" />
+
             <Button Text="↻ Recalcular riesgo" Command="{Binding RecalcularCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
             <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
 
-			<CollectionView ItemsSource="{Binding Items}" SelectionMode="Single" SelectionChanged="OnEstudianteSeleccionado">
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single" SelectionChanged="OnEstudianteSeleccionado">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:PanelItem">
                         <Border Style="{StaticResource ItemTarjeta}" Padding="15">
-                            <Grid ColumnDefinitions="2*,*,*,Auto" ColumnSpacing="12">
-                                <Label Text="{Binding NombreCompleto}" FontAttributes="Bold" />
-                                <Label Grid.Column="1" Text="{Binding InasistenciasTexto}" />
-                                <Label Grid.Column="2" Text="{Binding EntregaTexto}" />
-                                <Label Grid.Column="3" Text="{Binding NivelTexto}" FontAttributes="Bold" />
-                            </Grid>
+                            <VerticalStackLayout Spacing="6">
+                                <Grid ColumnDefinitions="2*,*,*,Auto" ColumnSpacing="12">
+                                    <Label Text="{Binding NombreCompleto}" FontAttributes="Bold" />
+                                    <Label Grid.Column="1" Text="{Binding InasistenciasTexto}" />
+                                    <Label Grid.Column="2" Text="{Binding EntregaTexto}" />
+                                    <Label Grid.Column="3" Text="{Binding NivelTexto}" FontAttributes="Bold" />
+                                </Grid>
+                                <Label Text="{Binding ContactoTexto}" Style="{StaticResource Subtitulo}" />
+                            </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

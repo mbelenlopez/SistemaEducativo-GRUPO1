@@ -105,4 +105,64 @@ public class ContactoServiceTests
         Assert.AreEqual(2, contactos.Count);
         Assert.IsTrue(contactos.All(c => c.EstudianteId == 1));
     }
+
+    // ---- H11: el último contacto de cada estudiante en el panel ----
+
+    [TestMethod]
+    public async Task UltimosContactos_DevuelveLaFechaMasReciente()
+    {
+        var (service, _) = Nuevo();
+        await service.RegistrarAsync(1, new DateTime(2026, 5, 10), TiposContacto.Llamada, "A");
+        await service.RegistrarAsync(1, new DateTime(2026, 5, 20), TiposContacto.Mensaje, "B");
+        await service.RegistrarAsync(1, new DateTime(2026, 5, 15), TiposContacto.Email, "C");
+
+        var ultimos = await service.ObtenerUltimosContactosAsync(new List<int> { 1 });
+
+        Assert.AreEqual(new DateTime(2026, 5, 20), ultimos[1]);
+    }
+
+    [TestMethod]
+    public async Task UltimosContactos_QuienNuncaFueContactadoNoAparece()
+    {
+        var (service, _) = Nuevo();
+        await service.RegistrarAsync(1, new DateTime(2026, 5, 10), TiposContacto.Llamada, "A");
+
+        var ultimos = await service.ObtenerUltimosContactosAsync(new List<int> { 1, 2 });
+
+        Assert.IsTrue(ultimos.ContainsKey(1));
+        Assert.IsFalse(ultimos.ContainsKey(2));
+    }
+
+    [TestMethod]
+    public async Task UltimosContactos_CadaEstudianteTieneLaFechaDeSusPropiosContactos()
+    {
+        var (service, _) = Nuevo();
+        await service.RegistrarAsync(1, new DateTime(2026, 5, 10), TiposContacto.Llamada, "A");
+        await service.RegistrarAsync(2, new DateTime(2026, 5, 20), TiposContacto.Llamada, "B");
+
+        var ultimos = await service.ObtenerUltimosContactosAsync(new List<int> { 1, 2 });
+
+        Assert.AreEqual(new DateTime(2026, 5, 10), ultimos[1]);
+        Assert.AreEqual(new DateTime(2026, 5, 20), ultimos[2]);
+    }
+
+    [TestMethod]
+    public async Task UltimosContactos_SinEstudiantes_DevuelveVacio()
+    {
+        var (service, _) = Nuevo();
+
+        var ultimos = await service.ObtenerUltimosContactosAsync(new List<int>());
+
+        Assert.AreEqual(0, ultimos.Count);
+    }
+
+    [TestMethod]
+    public void EsReciente_HastaSieteDias_SiEsReciente_DesdeOchoNo()
+    {
+        var hoy = new DateTime(2026, 5, 27);
+
+        Assert.IsTrue(ContactoService.EsReciente(new DateTime(2026, 5, 27), hoy), "hoy");
+        Assert.IsTrue(ContactoService.EsReciente(new DateTime(2026, 5, 20), hoy), "hace 7 días");
+        Assert.IsFalse(ContactoService.EsReciente(new DateTime(2026, 5, 19), hoy), "hace 8 días");
+    }
 }

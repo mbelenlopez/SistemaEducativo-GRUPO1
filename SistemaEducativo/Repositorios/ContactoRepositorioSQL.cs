@@ -16,6 +16,13 @@ public class ContactoRepositorioSQL : ContactoRepositorio
         return filas.Select(f => f.ToEntidad()).ToList();
     }
 
+    // H11: una sola consulta para todos los estudiantes del panel.
+    public async Task<List<Contacto>> ObtenerPorEstudiantesAsync(IReadOnlyCollection<int> estudianteIds)
+    {
+        var filas = await _db.QueryPorIdsAsync<ContactoRegistro>("Contactos", "EstudianteId", estudianteIds);
+        return filas.Select(f => f.ToEntidad()).ToList();
+    }
+
     public async Task AgregarAsync(Contacto contacto)
     {
         var registro = ContactoRegistro.Desde(contacto);
