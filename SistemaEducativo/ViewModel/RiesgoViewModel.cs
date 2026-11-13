@@ -1,17 +1,20 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SistemaEducativo.Repositorios;
 using SistemaEducativo.Services;
 using System.Collections.ObjectModel;
 
 namespace SistemaEducativo.ViewModel
 {
     public partial class RiesgoViewModel : ViewModelBase
-    {  
+    {
         private readonly RiesgoService _riesgoServicio;
+        private readonly Database _database; // NUEVO: para consultar contactos
 
-        public RiesgoViewModel(SesionActual sesion, RiesgoService riesgoServicio) : base(sesion)
+        public RiesgoViewModel(SesionActual sesion, RiesgoService riesgoServicio, Database database) : base(sesion)
         {
             _riesgoServicio = riesgoServicio;
+            _database = database;
         }
 
         public ObservableCollection<PanelItem> Items { get; } = new();
@@ -40,7 +43,6 @@ namespace SistemaEducativo.ViewModel
         [RelayCommand]
         public async Task RecalcularAsync()
         {
-            // H7: antes de calcular se leen los umbrales vigentes y se actualiza el texto que los muestra.
             await _riesgoServicio.CargarUmbralesAsync();
             OnPropertyChanged(nameof(UmbralesTexto));
 
@@ -49,11 +51,23 @@ namespace SistemaEducativo.ViewModel
             if (FaltaElegirComision())
                 return;
 
-            var panel = await _riesgoServicio.ObtenerPanelAsync(ComisionId);   // ya viene calculado y ordenado
+            var panel = await _riesgoServicio.ObtenerPanelAsync(ComisionId);
             Mensaje = panel.Count == 0 ? "Todavía no hay estudiantes en esta comisión." : string.Empty;
 
             foreach (var item in panel)
-                Items.Add(ArmarFila(item));
+            {
+                var fila = ArmarFila(item);
+
+                // ---- NUEVO H11: buscar el último contacto de este estudiante ----
+                var contactos = await _database.QueryAsync<ContactoRegistro>(
+                    "SELECT * FROM Contactos WHERE EstudianteId = ? ORDER BY Fecha DESC LIMIT 1",
+                    item.Estudiante.Id);
+
+                fila.UltimaFechaContacto = contactos.FirstOrDefault()?.Fecha;
+                // ----------------------------------------------------------------
+
+                Items.Add(fila);
+            }
         }
 
         [RelayCommand]
@@ -61,11 +75,11 @@ namespace SistemaEducativo.ViewModel
         {
             ReporteRiesgo estudiantesEnRiesgo = await _riesgoServicio.ObtenerReporteAsync(ComisionId);
 
-
             CantidadEstudiantes = estudiantesEnRiesgo.TotalEstudiantes;
             EstudiantesEnRiesgo = estudiantesEnRiesgo.EstudiantesEnRiesgo;
             HayDatos = estudiantesEnRiesgo.HayDatos;
         }
+       
 
         // Pasa del dato de negocio al texto que se ve en pantalla.
         private static PanelItem ArmarFila(EstudianteConRiesgo item) => new()
@@ -83,6 +97,5 @@ namespace SistemaEducativo.ViewModel
             NivelRiesgo.Bajo => "🟢 Bajo",
             _ => "⚪ Sin datos"
         };
-
     }
 }

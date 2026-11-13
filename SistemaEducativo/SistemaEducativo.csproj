@@ -69,5 +69,8 @@
 
 	<ItemGroup>
 		<MauiIcon Include="Resources\AppIcon\appicon.svg" />
+		<MauiImage Include="Resources\Images\*" />
+		<None Remove="Resources\Images\*.svg" />
+		<MauiFont Include="Resources\Fonts\*" />
 	</ItemGroup>
 </Project>

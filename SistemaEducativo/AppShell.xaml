@@ -5,31 +5,70 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:view="clr-namespace:SistemaEducativo.View"
     Title="Seguimiento de estudiantes"
-    FlyoutBehavior="Locked">
+    FlyoutBehavior="Locked"
+    FlyoutBackgroundColor="#F7F9FC">
 
-    <!-- Cada FlyoutItem es un botón del menú lateral. Su ShellContent es la página que se abre. -->
-    <FlyoutItem Title="Inicio / Comisión" Route="MainPage">
+    <Shell.FlyoutHeader>
+        <VerticalStackLayout Padding="0,40,0,30" BackgroundColor="#F7F9FC">
+            <Label Text="Sistema Educativo" TextColor="#3B6BB2" FontSize="22" FontAttributes="Bold" HorizontalOptions="Center" />
+            <Label Text="Gestión de Estudiantes" TextColor="#A0AAB5" FontSize="13" HorizontalOptions="Center" Margin="0,5,0,0" />
+        </VerticalStackLayout>
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="Auto, *" Padding="15,0" HeightRequest="50" BackgroundColor="Transparent">
+                <!-- Forzamos el tamaño y usamos un contenedor para el color -->
+                <Image Source="{Binding FlyoutIcon}" 
+                       HeightRequest="24" 
+                       WidthRequest="24" 
+                       VerticalOptions="Center" 
+                       HorizontalOptions="Center">
+                    <Image.Behaviors>
+                        <!-- Un truco visual: si el icono es negro, no se nota. 
+                             Si MAUI lo pinta blanco, al menos lo verás. -->
+                    </Image.Behaviors>
+                </Image>
+                <Label Grid.Column="1" 
+                       Text="{Binding Title}" 
+                       TextColor="#333333" 
+                       FontSize="15" 
+                       VerticalOptions="Center" 
+                       Margin="15,0,0,0"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    
+    <FlyoutItem Title="Inicio / Comisión" Route="MainPage" Icon="home.png">
         <ShellContent ContentTemplate="{DataTemplate view:MainPage}" />
     </FlyoutItem>
-	<FlyoutItem Title="Nómina (H1)" Route="NominaPage">
-		<ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
-	</FlyoutItem>
-    <FlyoutItem Title="Calendario(H2)" Route="CalendarioPage">
+
+    <FlyoutItem Title="Nómina" Route="NominaPage" Icon="users.png">
+        <ShellContent ContentTemplate="{DataTemplate view:NominaPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Calendario" Route="CalendarioPage" Icon="calendar.png">
         <ShellContent ContentTemplate="{DataTemplate view:CalendarioPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Asistencia(H3)" Route="AsistenciaPage">
+
+    <FlyoutItem Title="Asistencia" Route="AsistenciaPage" Icon="check_square.png">
         <ShellContent ContentTemplate="{DataTemplate view:AsistenciaPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Trabajos(H2)" Route="TrabajoPage">
+
+    <FlyoutItem Title="Trabajos" Route="TrabajoPage" Icon="clipboard.png">
         <ShellContent ContentTemplate="{DataTemplate view:TrabajoPage}"/>
     </FlyoutItem>
-    <FlyoutItem Title="Riesgo(H6)" Route="RiesgoPage">
+
+    <FlyoutItem Title="Panel de Riesgo" Route="RiesgoPage" Icon="alert_triangle.png">
         <ShellContent ContentTemplate="{DataTemplate view:RiesgoPage}"/>
     </FlyoutItem>
-	<FlyoutItem Title="Umbrales(H7)" Route="ConfiguracionRiesgoPage">
-		<ShellContent ContentTemplate="{DataTemplate view:ConfiguracionRiesgoPage}"/>
-	</FlyoutItem>
-    <FlyoutItem Title="Contactos(H10)" Route="ContactoPage">
+
+    <FlyoutItem Title="Contactos" Route="ContactoPage" Icon="phone_call.png">
         <ShellContent ContentTemplate="{DataTemplate view:ContactoPage}"/>
     </FlyoutItem>
+
+    <FlyoutItem Title="Umbrales" Route="ConfiguracionRiesgoPage" Icon="edit_2.png">
+        <ShellContent ContentTemplate="{DataTemplate view:ConfiguracionRiesgoPage}"/>
+    </FlyoutItem>
+
 </Shell>
