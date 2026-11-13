@@ -13,9 +13,9 @@ namespace SistemaEducativo.Services
         private readonly EntregaRepositorio _entregas;
         private readonly EstudianteRepositorio _estudiantes;
 
-        public EntregaService(EntregaRepositorio entragas, EstudianteRepositorio estudiantes)
+        public EntregaService(EntregaRepositorio entregas, EstudianteRepositorio estudiantes)
         {
-            _entregas = entragas;
+            _entregas = entregas;
             _estudiantes = estudiantes;
         }
         public Task<List<Entrega>> ObtenerPorTrabajoAsync(int trabajoId) =>
@@ -38,7 +38,7 @@ namespace SistemaEducativo.Services
                 {
                     TrabajoId = trabajoId,
                     EstudianteId = estudiante.Id,
-                    Condicion = ids.Contains(estudiante.Id) ? "Entregado" : "No entregado"
+                    Condicion = ids.Contains(estudiante.Id) ? CondicionEntrega.Entregado : CondicionEntrega.NoEntregado
                 });
             }
             return (true, " Entregas Regustradas correctamente");
