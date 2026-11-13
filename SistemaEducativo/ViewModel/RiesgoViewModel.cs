@@ -20,6 +20,20 @@ namespace SistemaEducativo.ViewModel
             $"Riesgo ALTO si las inasistencias llegan a {_riesgoServicio.UmbralInasistencias:0}%" +
             $" o los trabajos no entregados al {_riesgoServicio.UmbralNoEntregados:0}%.";
 
+        public string ResumenRiesgoTexto =>
+             HayDatos ? $"{EstudiantesEnRiesgo} de {CantidadEstudiantes}" : "Datos insuficientes para generar reporte.";
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ResumenRiesgoTexto))]
+        private int _cantidadEstudiantes;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ResumenRiesgoTexto))]
+        private int _estudiantesEnRiesgo;
+
+        [ObservableProperty]
+        private bool _hayDatos;
+
         [RelayCommand]
         public async Task CargarAsync() => RecalcularAsync();
 
@@ -40,6 +54,17 @@ namespace SistemaEducativo.ViewModel
 
             foreach (var item in panel)
                 Items.Add(ArmarFila(item));
+        }
+
+        [RelayCommand]
+        public async Task ObtenerReporteAsync()
+        {
+            ReporteRiesgo estudiantesEnRiesgo = await _riesgoServicio.ObtenerReporteAsync(ComisionId);
+
+
+            CantidadEstudiantes = estudiantesEnRiesgo.TotalEstudiantes;
+            EstudiantesEnRiesgo = estudiantesEnRiesgo.EstudiantesEnRiesgo;
+            HayDatos = estudiantesEnRiesgo.HayDatos;
         }
 
         // Pasa del dato de negocio al texto que se ve en pantalla.

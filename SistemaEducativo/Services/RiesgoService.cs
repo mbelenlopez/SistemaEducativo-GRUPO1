@@ -1,5 +1,6 @@
 ﻿using SistemaEducativo.Entidades;
 using SistemaEducativo.Repositorios;
+using SistemaEducativo.ViewModel;
 
 namespace SistemaEducativo.Services
 {
@@ -13,11 +14,14 @@ namespace SistemaEducativo.Services
         private readonly AsistenciaRepositorio _asistenciaRepositorio;
         private readonly EstudianteRepositorio _estudianteRepositorio;
         private readonly EntregaRepositorio _entregaRepositorio;
+
+        private readonly TrabajoRepositorio _trabajoRepositorio;
         private readonly CalculadoraRiesgo _calculadoraRiesgo;
         private readonly ConfiguracionRiesgoService _configuracion;
 
         public RiesgoService(
             AsistenciaRepositorio asistenciaRepositorio,
+            TrabajoRepositorio trabajoRepositorio,
             EstudianteRepositorio estudianteRepositorio,
             EntregaRepositorio entregaRepositorio,
             CalculadoraRiesgo calculadoraRiesgo,
@@ -25,6 +29,7 @@ namespace SistemaEducativo.Services
         {
             _asistenciaRepositorio = asistenciaRepositorio;
             _estudianteRepositorio = estudianteRepositorio;
+            _trabajoRepositorio = trabajoRepositorio;
             _entregaRepositorio = entregaRepositorio;
             _calculadoraRiesgo = calculadoraRiesgo;
             _configuracion = configuracion;
@@ -69,6 +74,32 @@ namespace SistemaEducativo.Services
                 .ThenByDescending(e => e.Riesgo.Puntaje)
                 .ThenBy(e => e.Estudiante.NombreCompleto)
                 .ToList();
+
+        public async Task<ReporteRiesgo> ObtenerReporteAsync(int comisionId)
+        {
+            var trabajos = await _trabajoRepositorio.ObtenerPorComisionAsync(comisionId);
+            var estudiantes = await _estudianteRepositorio.ObtenerPorComisionAsync(comisionId);
+
+
+            if (!trabajos.Any())
+            {
+                return new ReporteRiesgo(
+                    estudiantes.Count(),
+                    0,
+                    false);
+            }
+
+            var resultados = await CalcularComisionAsync(comisionId);
+
+            int enRiesgo = resultados.Count(
+                x => x.Riesgo.Nivel == NivelRiesgo.Alto);
+
+            return new ReporteRiesgo(
+                estudiantes.Count(),
+                enRiesgo,
+                true
+                );
+        }
 
         private async Task<ResultadoRiesgo> CalcularConUmbralesAsync(int estudianteId, UmbralesRiesgo umbrales)
         {

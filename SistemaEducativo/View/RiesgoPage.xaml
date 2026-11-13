@@ -17,7 +17,15 @@
             <Button Text="↻ Recalcular riesgo" Command="{Binding RecalcularCommand}" Style="{StaticResource PrimaryButton}" HorizontalOptions="Start" />
             <Label Text="{Binding Mensaje}" Style="{StaticResource MensajeEstado}" />
 
-			<CollectionView ItemsSource="{Binding Items}" SelectionMode="Single" SelectionChanged="OnEstudianteSeleccionado">
+            <Border Style="{StaticResource ItemTarjeta}" Padding="20" BackgroundColor="#E8F0FE">
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Resumen de la Comisión" FontAttributes="Bold" FontSize="16" TextColor="#1A73E8"/>
+                    <Label Text="{Binding ResumenRiesgoTexto}" FontSize="24" />
+                    <Label Text="Estudiantes en riesgo de abandonar."  FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Border>
+
+            <CollectionView ItemsSource="{Binding Items}" SelectionMode="Single" SelectionChanged="OnEstudianteSeleccionado">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="viewmodel:PanelItem">
                         <Border Style="{StaticResource ItemTarjeta}" Padding="15">

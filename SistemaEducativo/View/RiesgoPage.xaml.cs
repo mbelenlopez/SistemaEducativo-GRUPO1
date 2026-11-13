@@ -17,6 +17,7 @@ public partial class RiesgoPage : ContentPage
     {
         base.OnAppearing();
         await _viewModel.CargarAsync();
+        await _viewModel.ObtenerReporteAsync();
     }
 
     // CA6 de H9: un clic sobre un estudiante del panel abre su ficha.
